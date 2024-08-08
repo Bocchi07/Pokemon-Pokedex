@@ -1,26 +1,48 @@
 import React, { useState, useEffect } from "react";
+import PokemonList from "./PokemonList.jsx";
 
-const Pagination = ({
+function Pagination({
   prevBtn,
   nextBtn,
   searchPokemon,
   handleSearch,
   searchedPokemon,
-}) => {
+  currentPokemon,
+}) {
+  // console.log(currentPokemon);
   return (
-    <div className="bg-red-300 w-[95%] h-[90%]">
-      <div className="bg-white border-slate-500 border-solid">
+    <div className="bg-gray-100 w-[95%] h-[90%] rounded-md p-4">
+      <div className=" border-slate-600 border-solid  py-8 ">
         <input
           type="text"
           placeholder="Enter a name or id"
           id="search-pokemon"
           value={searchPokemon}
           onChange={handleSearch}
+          className="py-3 px-2 w-[70%] rounded-lg rounded-r-none"
         />
+        <button
+          onClick={searchedPokemon}
+          className="bg-blue-500 py-3 px-2 text-center text-white rounded-r-md"
+        >
+          Search
+        </button>
       </div>
 
-      <button onClick={searchedPokemon}>Search</button>
-      <h2 className="">Hello</h2>
+      <div className=" w-full grid grid-cols-3 gap-y-14 gap-x-4">
+        {currentPokemon.map((c, index) => {
+          return (
+            <PokemonList
+              pokemonSprite={c.sprites}
+              pokemonId={c.id}
+              pokemonName={c.name}
+              pokemonTypes={c.types}
+              key={index}
+            />
+          );
+        })}
+      </div>
+
       <button onClick={prevBtn} type="button">
         Prev
       </button>
@@ -29,7 +51,7 @@ const Pagination = ({
       </button>
     </div>
   );
-};
+}
 
 export default Pagination;
 

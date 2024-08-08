@@ -37,7 +37,7 @@ function App() {
         });
 
         setCurrentPokemon(detailedPokemon);
-        // console.log(pokemonDetailsPromises);
+        console.log(currentPokemon);
       } catch (error) {
         console.error(error);
       } finally {
@@ -102,6 +102,7 @@ function App() {
         searchPokemon={searchPokemon}
         handleSearch={handlePokemonInput}
         searchedPokemon={handleSearchedPokemon}
+        currentPokemon={currentPokemon}
       />
     </>
   );
