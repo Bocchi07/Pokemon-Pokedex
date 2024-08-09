@@ -8,10 +8,11 @@ function Pagination({
   handleSearch,
   searchedPokemon,
   currentPokemon,
+  handlePokemonPreview,
 }) {
   // console.log(currentPokemon);
   return (
-    <div className="bg-gray-100 w-[95%] h-[90%] rounded-md p-4">
+    <div className="bg-gray-100 w-[100%] h-[90%] rounded-md p-4">
       <div className=" border-slate-600 border-solid  py-8 ">
         <input
           type="text"
@@ -29,7 +30,7 @@ function Pagination({
         </button>
       </div>
 
-      <div className=" w-full grid grid-cols-3 gap-y-14 gap-x-4">
+      <div className=" w-full grid grid-cols-3 gap-y-5 gap-x-4">
         {currentPokemon.map((c, index) => {
           return (
             <PokemonList
@@ -37,7 +38,12 @@ function Pagination({
               pokemonId={c.id}
               pokemonName={c.name}
               pokemonTypes={c.types}
+              height={c.height}
+              weight={c.weight}
+              stats={c.stats}
+              abilities={c.abilities}
               key={index}
+              handlePokemonPreview={handlePokemonPreview}
             />
           );
         })}

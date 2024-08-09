@@ -5,6 +5,34 @@
   text-align: center;
 }
 
+body {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+input[type="text"] {
+  outline: none;
+  padding-left: 1em;
+}
+
+.pokemon-list-container {
+  box-shadow: 0 2px 0.3rem rgba(32, 49, 51, 0.26);
+  cursor: pointer;
+}
+
+.pokemon-list-container .pokemon-img {
+  transition: all 200ms ease-in-out;
+  /* filter: drop-shadow(35px -11px 4px rgba(0, 0, 0, 0.096)); */
+}
+
+.pokemon-list-container:hover {
+  box-shadow: 0 2px 1rem rgba(32, 49, 51, 0.205);
+}
+
+.pokemon-list-container:hover .pokemon-img {
+  transform: scale(1.09);
+  filter: drop-shadow(20px 6px 2px #203b241a);
+}
+
 .fire {
   background-color: #fd7d24;
   color: white;

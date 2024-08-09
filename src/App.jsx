@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import "./App.css";
 import Pagination from "./assets/components/Pagination";
 import axios from "axios";
+import PokemonPreview from "./assets/components/PokemonPreview.jsx";
 
 function App() {
   const [page, setPage] = useState(1);
@@ -10,6 +11,7 @@ function App() {
   const [pokemonSearchUrl, setPokemonSearchUrl] = useState();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [previewPokemon, setPreviewPokemon] = useState();
 
   useEffect(() => {
     const pokemonList = async () => {
@@ -27,17 +29,27 @@ function App() {
         );
 
         const detailedPokemon = pokemonDetailsResponses.map((res) => {
-          const { id, name, types, sprites } = res.data;
+          const { id, name, types, sprites, height, weight, stats, abilities } =
+            res.data;
           return {
             id,
             name,
             types: types.map((info) => info.type.name),
             sprites: sprites.other.dream_world.front_default,
+            height,
+            weight,
+            stats: stats.map((s) => {
+              return {
+                statNum: s.base_stat,
+                statName: s.stat.name,
+              };
+            }),
+            abilities: abilities.map((a) => a.ability.name),
           };
         });
 
         setCurrentPokemon(detailedPokemon);
-        console.log(currentPokemon);
+        // console.log(currentPokemon);
       } catch (error) {
         console.error(error);
       } finally {
@@ -94,6 +106,12 @@ function App() {
     }
   };
 
+  const handlePokemonPreview = (pokemonData) => {
+    setPreviewPokemon((prevPokemon) => (prevPokemon = pokemonData));
+  };
+
+  console.log(previewPokemon);
+
   return (
     <>
       <Pagination
@@ -103,7 +121,10 @@ function App() {
         handleSearch={handlePokemonInput}
         searchedPokemon={handleSearchedPokemon}
         currentPokemon={currentPokemon}
+        handlePokemonPreview={handlePokemonPreview}
       />
+
+      <PokemonPreview pokemonData={previewPokemon} />
     </>
   );
 }
