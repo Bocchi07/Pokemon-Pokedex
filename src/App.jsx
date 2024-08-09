@@ -12,6 +12,7 @@ function App() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [previewPokemon, setPreviewPokemon] = useState();
+  const [switchPage, setSwitchPage] = useState("Pagination");
 
   useEffect(() => {
     const pokemonList = async () => {
@@ -35,7 +36,7 @@ function App() {
             id,
             name,
             types: types.map((info) => info.type.name),
-            sprites: sprites.other.dream_world.front_default,
+            sprites: sprites.other['official-artwork'].front_default,
             height,
             weight,
             stats: stats.map((s) => {
@@ -49,7 +50,7 @@ function App() {
         });
 
         setCurrentPokemon(detailedPokemon);
-        // console.log(currentPokemon);
+        // console.log(pokemonDetailsResponses);
       } catch (error) {
         console.error(error);
       } finally {
@@ -84,7 +85,7 @@ function App() {
         return {
           id,
           name,
-          sprites: sprites.other.dream_world,
+          sprites: sprites.official - artwork.front_default,
           types: types.map((t) => t.type.name),
           height,
           weight,
@@ -99,7 +100,7 @@ function App() {
       };
       // setPokemonSearchUrl(response);
 
-      console.log(getPokemonData());
+      // console.log(getPokemonData());
       setSearchPokemon("");
     } catch (error) {
       console.error(error);
@@ -107,24 +108,34 @@ function App() {
   };
 
   const handlePokemonPreview = (pokemonData) => {
+    setSwitchPage("PokemonPreview");
     setPreviewPokemon((prevPokemon) => (prevPokemon = pokemonData));
   };
 
-  console.log(previewPokemon);
+  const backToPaginationPg = () => {
+    setSwitchPage("Pagination");
+  };
+
+  // console.log(switchPage);
 
   return (
     <>
-      <Pagination
-        prevBtn={prevPokemon}
-        nextBtn={nextPokemon}
-        searchPokemon={searchPokemon}
-        handleSearch={handlePokemonInput}
-        searchedPokemon={handleSearchedPokemon}
-        currentPokemon={currentPokemon}
-        handlePokemonPreview={handlePokemonPreview}
-      />
-
-      <PokemonPreview pokemonData={previewPokemon} />
+      {switchPage === "Pagination" ? (
+        <Pagination
+          prevBtn={prevPokemon}
+          nextBtn={nextPokemon}
+          searchPokemon={searchPokemon}
+          handleSearch={handlePokemonInput}
+          searchedPokemon={handleSearchedPokemon}
+          currentPokemon={currentPokemon}
+          handlePokemonPreview={handlePokemonPreview}
+        />
+      ) : (
+        <PokemonPreview
+          pokemonData={previewPokemon}
+          closePage={backToPaginationPg}
+        />
+      )}
     </>
   );
 }
