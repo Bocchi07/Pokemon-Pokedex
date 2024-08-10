@@ -13,6 +13,10 @@ function App() {
   const [error, setError] = useState(null);
   const [previewPokemon, setPreviewPokemon] = useState();
   const [switchPage, setSwitchPage] = useState("Pagination");
+  const [pokemonIndex, setPokemonIndex] = useState(0);
+  const [evolutionStage, setEvolutionStage] = useState();
+
+  let content;
 
   useEffect(() => {
     const pokemonList = async () => {
@@ -20,9 +24,11 @@ function App() {
       try {
         const offset = (page - 1) * 20;
         const response = await axios.get(
-          `https://pokeapi.co/api/v2/pokemon?limit=20&offset=${offset}`
+          `https://pokeapi.co/api/v2/pokemon?limit=21&offset=${offset}`
         );
-        const pokemonURL = response.data.results.map((pokemon) => pokemon.url);
+        const pokemonURL = response.data.results.map((pokemon) => {
+          return pokemon.url;
+        });
 
         const pokemonDetailsPromises = pokemonURL.map((res) => axios.get(res));
         const pokemonDetailsResponses = await Promise.all(
@@ -36,7 +42,7 @@ function App() {
             id,
             name,
             types: types.map((info) => info.type.name),
-            sprites: sprites.other['official-artwork'].front_default,
+            sprites: sprites.other["official-artwork"].front_default,
             height,
             weight,
             stats: stats.map((s) => {
@@ -109,35 +115,126 @@ function App() {
 
   const handlePokemonPreview = (pokemonData) => {
     setSwitchPage("PokemonPreview");
-    setPreviewPokemon((prevPokemon) => (prevPokemon = pokemonData));
-  };
+    setPreviewPokemon(pokemonData);
+    const pokemonName = pokemonData.name.toLowerCase();
+
+    const getPokemonSpecies = async () => {
+        try {
+            const response = await axios.get(
+                `https://pokeapi.co/api/v2/pokemon-species/${pokemonName}`
+            );
+
+            const { evolves_from_species, egg_groups, flavor_text_entries } = response.data;
+
+            const getPokemonData = () => {
+                return {
+                    evolves_from_species: evolves_from_species?.name || '',
+                    egg_groups,
+                    flavor_text_entries: flavor_text_entries[6] || {},
+                };
+            };
+
+            const getPokemonEvolutionStages = async () => {
+                let evolutionStagesData = {
+                    images: {
+                        firstForm: "",
+                        secondForm: "",
+                        thirdForm: "",
+                    },
+                    name: {
+                        firstForm: "",
+                        secondForm: "",
+                        thirdForm: "",
+                    }
+                };
+
+                const evolutionChainUrl = response.data.evolution_chain.url;
+                try {
+                    const res = await axios.get(evolutionChainUrl);
+                    const firstStage = res.data?.chain?.species?.name;
+                    const secondStage = res.data?.chain?.evolves_to?.[0]?.species?.name;
+                    const lastStage = res.data?.chain?.evolves_to?.[0]?.evolves_to?.[0]?.species?.name;
+
+                    evolutionStagesData.name.firstForm = firstStage || '';
+                    evolutionStagesData.name.secondForm = secondStage || '';
+                    evolutionStagesData.name.thirdForm = lastStage || '';
+
+                    const fetchEvolutionStages = async () => {
+                        try {
+                            const requests = [];
+                            if (firstStage) requests.push(axios.get(`https://pokeapi.co/api/v2/pokemon/${firstStage}`));
+                            if (secondStage) requests.push(axios.get(`https://pokeapi.co/api/v2/pokemon/${secondStage}`));
+                            if (lastStage) requests.push(axios.get(`https://pokeapi.co/api/v2/pokemon/${lastStage}`));
+
+                            const responses = await Promise.all(requests);
+
+                            if (responses[0]) {
+                                evolutionStagesData.images.firstForm = responses[0]?.data?.sprites?.other["official-artwork"]?.front_default || '';
+                            }
+                            if (responses[1]) {
+                                evolutionStagesData.images.secondForm = responses[1]?.data?.sprites?.other["official-artwork"]?.front_default || '';
+                            }
+                            if (responses[2]) {
+                                evolutionStagesData.images.thirdForm = responses[2]?.data?.sprites?.other["official-artwork"]?.front_default || '';
+                            }
+
+                            // console.log(res)
+                            setEvolutionStage(evolutionStagesData);
+                        } catch (error) {
+                            console.error("Error fetching Pokémon images:", error);
+                        }
+                    };
+
+                    await fetchEvolutionStages();
+                } catch (error) {
+                    console.error("Error fetching evolution chain:", error);
+                }
+            };
+
+            await getPokemonEvolutionStages();
+            console.log(getPokemonData())
+        } catch (error) {
+            console.error("Error fetching Pokémon species:", error);
+        
+
+          }
+    };
+
+    getPokemonSpecies();
+};
+
+
+console.log(evolutionStage)
+
 
   const backToPaginationPg = () => {
     setSwitchPage("Pagination");
   };
 
-  // console.log(switchPage);
+  // console.log("hello", evolutionStage);
 
-  return (
-    <>
-      {switchPage === "Pagination" ? (
-        <Pagination
-          prevBtn={prevPokemon}
-          nextBtn={nextPokemon}
-          searchPokemon={searchPokemon}
-          handleSearch={handlePokemonInput}
-          searchedPokemon={handleSearchedPokemon}
-          currentPokemon={currentPokemon}
-          handlePokemonPreview={handlePokemonPreview}
-        />
-      ) : (
-        <PokemonPreview
-          pokemonData={previewPokemon}
-          closePage={backToPaginationPg}
-        />
-      )}
-    </>
-  );
+  if (switchPage === "Pagination") {
+    content = (
+      <Pagination
+        prevBtn={prevPokemon}
+        nextBtn={nextPokemon}
+        searchPokemon={searchPokemon}
+        handleSearch={handlePokemonInput}
+        searchedPokemon={handleSearchedPokemon}
+        currentPokemon={currentPokemon}
+        handlePokemonPreview={handlePokemonPreview}
+      />
+    );
+  } else if (switchPage === "PokemonPreview") {
+    content = (
+      <PokemonPreview
+        pokemonData={previewPokemon}
+        closePage={backToPaginationPg}
+      />
+    );
+  }
+
+  return <>{content}</>;
 }
 
 export default App;

@@ -2,7 +2,7 @@ import React from "react";
 import "../../App.css";
 
 function PokemonList({
-  key,
+  keyItem,
   pokemonSprite,
   pokemonId,
   pokemonName,
@@ -53,7 +53,7 @@ function PokemonList({
 
   return (
     <section
-      key={key}
+      key={keyItem}
       className="pokemon-list-container bg-white rounded-xl h-56 max-h-68  flex flex-col items-center "
       onClick={() => handlePokemonPreview(pokemonData)}
     >
@@ -66,9 +66,10 @@ function PokemonList({
       <p className="text-sm mt-1">{pokemonFixID}</p>
 
       <div className="flex gap-x-3">
-        {pokemonTypes.map((b) => {
+        {pokemonTypes.map((b, i) => {
           return (
             <div
+              key={i}
               className={` text-sm text-center mt-2 px-5 py-1 rounded-md ${b}`}
             >
               {b}

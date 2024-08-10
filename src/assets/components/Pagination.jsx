@@ -42,7 +42,7 @@ function Pagination({
               weight={c.weight}
               stats={c.stats}
               abilities={c.abilities}
-              key={index}
+              keyItem={index}
               handlePokemonPreview={handlePokemonPreview}
             />
           );
