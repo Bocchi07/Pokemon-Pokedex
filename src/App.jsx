@@ -146,7 +146,17 @@ function App() {
                         firstForm: "",
                         secondForm: "",
                         thirdForm: "",
-                    }
+                    },
+                    types: {
+                        firstForm: "",
+                        secondForm: "",
+                        thirdForm: "",
+                    },
+                    id: {
+                      firstForm: "",
+                      secondForm: "",
+                      thirdForm: "",
+                  }
                 };
 
                 const evolutionChainUrl = response.data.evolution_chain.url;
@@ -163,30 +173,41 @@ function App() {
                     const fetchEvolutionStages = async () => {
                         try {
                             const requests = [];
+                            const otherRequest = [];
+
                             if (firstStage) requests.push(axios.get(`https://pokeapi.co/api/v2/pokemon/${firstStage}`));
                             if (secondStage) requests.push(axios.get(`https://pokeapi.co/api/v2/pokemon/${secondStage}`));
                             if (lastStage) requests.push(axios.get(`https://pokeapi.co/api/v2/pokemon/${lastStage}`));
+
 
                             const responses = await Promise.all(requests);
 
                             if (responses[0]) {
                                 evolutionStagesData.images.firstForm = responses[0]?.data?.sprites?.other["official-artwork"]?.front_default || '';
+                                evolutionStagesData.types.firstForm = responses[0]?.data?.types;
+                                evolutionStagesData.id.firstForm = responses[0]?.data?.id;
                             }
                             if (responses[1]) {
                                 evolutionStagesData.images.secondForm = responses[1]?.data?.sprites?.other["official-artwork"]?.front_default || '';
+                                evolutionStagesData.types.secondForm = responses[1]?.data?.types;
+                                evolutionStagesData.id.secondForm = responses[1]?.data?.id;
                             }
                             if (responses[2]) {
                                 evolutionStagesData.images.thirdForm = responses[2]?.data?.sprites?.other["official-artwork"]?.front_default || '';
+                                evolutionStagesData.types.thirdForm = responses[2]?.data?.types;
+                                evolutionStagesData.id.thirdForm = responses[2]?.data?.id;
                             }
 
-                            // console.log(res)
+                            // console.log(evolutionStagesData.id)
                             setEvolutionStage(evolutionStagesData);
                         } catch (error) {
                             console.error("Error fetching Pokémon images:", error);
                         }
                     };
 
+                    // console.log(res.data.chain.species.url)
                     await fetchEvolutionStages();
+                    // console.log(evolutionChainUrl)
                 } catch (error) {
                     console.error("Error fetching evolution chain:", error);
                 }

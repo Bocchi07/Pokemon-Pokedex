@@ -1,6 +1,6 @@
 import React from 'react'
 
-function PokemonStats({statsName, statsNum}) {
+function PokemonStats({statsName, statsNum, handleTotalStats}) {
   let statsPercent =  (statsNum / 252) * 100; 
   statsPercent = `${Math.ceil(statsPercent)}%`;
 
@@ -25,7 +25,9 @@ function PokemonStats({statsName, statsNum}) {
     width: statsPercent
   }
 
-  console.log(handleStatsName());
+
+
+  // console.log(handleStatsName());
 
   return (
     <div className='flex text-left gap-4 '>
@@ -38,7 +40,7 @@ function PokemonStats({statsName, statsNum}) {
         </div>
 
         <div className='flex-1 px-2'>
-            <div className='bg-gray-200 w-full rounded-2xl h-6 mb-1'>
+            <div className='bg-gray-100 w-full rounded-2xl h-6 mb-1'>
               <div className={`bg-${statsName} h-full rounded-2xl`} style={statsBarStyles}>
               </div>
             </div>

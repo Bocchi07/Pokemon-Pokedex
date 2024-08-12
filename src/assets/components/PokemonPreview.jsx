@@ -19,9 +19,26 @@ function PokemonPreview({ pokemonData, closePage, evolutionStage, pokemonAddInfo
 
 
   // console.log(evolutionStage);
+  let totalStats = 0;
+
+  const handleTotalStats = () => {
+    const mapStats = pokemonData && pokemonData.stats.map(s => totalStats += s.statNum);
+    
+    return `${totalStats}`
+  }
+
+  handleTotalStats();
+
+  const totalStatsPercent = Math.ceil((totalStats / 1512) * 100);
+
+  const totalStatsWidth = {
+    width: `${totalStatsPercent}%`,
+  }
+
+  // console.log(totalStatsPercent);
 
   return (
-    <div className=" h-[90vh] p-10  rounded-md">
+    <div className="h-[90vh] p-10  rounded-md">
       <div className="preview-container flex justify-between">
         <div>
         <button onClick={closePage}> Back </button>
@@ -103,18 +120,45 @@ function PokemonPreview({ pokemonData, closePage, evolutionStage, pokemonAddInfo
     
       </div>
 
-      <div className="flex gap-x-4 mb-10 mt-1  border-t-2 border-s-orange-300 pt-8">
-          <PokemonEvolutionStages evolutionStage={evolutionStage} firstForm={getPokemonFirstForm} secondForm={getPokemonSecondForm} lastForm={getPokemonLastForm}/>
-
-          <div className="ml-4 h-80 flex-1 ">
-            <h4 className="text-left text-xl font-semibold mb-4">Stats</h4>
+      <div className=" gap-x-4 mb-10 mt-8   pt-8">      
+          <div className="ml-4 h-80 flex-1">
+            <h4 className="text-center text-2xl font-semibold mb-8">Statistic</h4>
              {
               pokemonData.stats.map(s => {
-                return <PokemonStats statsName={s.statName} statsNum = {s.statNum}/>
+                return <PokemonStats statsName={s.statName} statsNum = {s.statNum} handleTotalStats={handleTotalStats}/>
               })
              } 
+
+          <div className='flex text-left gap-4 '>
+                  <div className='max-w-[27%] w-[20%] mb-4 text-gray-600 text-nowrap'>
+                      <h4 className='font-semibold'>Total:</h4>
+                  </div>
+                  
+                  <div className='w-[10%] '>
+                      <h4 className='text-sm font-semibold'>{totalStats}</h4>
+                  </div>
+
+                  <div className='flex-1 px-2'>
+                      <div className='bg-gray-200 w-full rounded-2xl h-6 mb-1'>
+                        <div className={`bg-total h-full rounded-2xl `} style={totalStatsWidth}>
+                        </div>
+                      </div>
+                  </div>
+                  
+              </div>
           </div>
+
+          <PokemonEvolutionStages evolutionStage={evolutionStage} firstForm={getPokemonFirstForm} secondForm={getPokemonSecondForm} lastForm={getPokemonLastForm}/>
+
         </div>
+
+        <footer className="mt-40 text-sm">
+        © 2024 Pokédex Central.
+        Catch 'Em All with Us! 🌟
+        Explore the world of Pokémon and stay updated with the latest Pokédex entries.
+        Questions or feedback? Contact us at jeavenanda07@gmail.com.
+        Follow us on [social media links].
+        </footer>
     </div>
   );
 }
