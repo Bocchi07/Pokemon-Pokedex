@@ -115,6 +115,37 @@ input[type="text"] {
 }
 
 
+/* Pokemon Background Statistics  */
+.bg-hp{
+  background-color: hsl(60, 80%, 70%);
+}
+
+.bg-attack{
+  background-color: rgb(67, 248, 128);
+}
+
+.bg-defense{
+  background-color: hsl(60, 80%, 70%);
+}
+
+.bg-special-attack{
+  background-color: rgb(247, 54, 54);
+}
+
+.bg-special-defense{
+  background-color: hsl(60, 80%, 70%);
+}
+
+.bg-speed{
+  background-color: hsl(60, 80%, 70%);
+}
+
+
+
+
+/* Pokemon Background Statistics  */
+
+
 /* Pokemon background types color */
 /* 
 .bg-fire{

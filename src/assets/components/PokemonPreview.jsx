@@ -1,8 +1,11 @@
-import React from "react";
+import React, {useState} from "react";
 import "../../App.css";
+import PokemonStats from "./PokemonStats.jsx"
+import PokemonEvolutionStages from "./PokemonEvolutionStages.jsx";
 
 function PokemonPreview({ pokemonData, closePage, evolutionStage, pokemonAddInfo }) {
   const pokemonType = pokemonData.types[0];
+  const [pokemonImg, setPokemonImg] = useState([]);
   
   const pokemonFacts = pokemonAddInfo ? pokemonAddInfo.flavor_text_entries.flavor_text : " ";
   const pokemonEggGroups = pokemonAddInfo ? pokemonAddInfo.egg_groups.map(e => <option >{e.name}</option>) : null;
@@ -10,11 +13,15 @@ function PokemonPreview({ pokemonData, closePage, evolutionStage, pokemonAddInfo
   const getPokemonWeight = pokemonData.weight / 10;
   const getPokemonHeight = pokemonData.height * 10
 
-  console.log(pokemonData.abilities);
+  const getPokemonFirstForm = evolutionStage  &&  evolutionStage.images.firstForm;
+  const getPokemonSecondForm = evolutionStage &&  evolutionStage.images.secondForm;
+  const getPokemonLastForm = evolutionStage &&  evolutionStage.images.thirdForm;
+
+
+  // console.log(evolutionStage);
 
   return (
     <div className=" h-[90vh] p-10  rounded-md">
-
       <div className="preview-container flex justify-between">
         <div>
         <button onClick={closePage}> Back </button>
@@ -32,9 +39,6 @@ function PokemonPreview({ pokemonData, closePage, evolutionStage, pokemonAddInfo
 
          </div>
       </div>
-
-     
-
 
       <div className="flex w-full gap-3">
   
@@ -93,8 +97,24 @@ function PokemonPreview({ pokemonData, closePage, evolutionStage, pokemonAddInfo
             </div>
         </div>
 
+
+
         </div>
+    
       </div>
+
+      <div className="flex gap-x-4 mb-10 mt-1  border-t-2 border-s-orange-300 pt-8">
+          <PokemonEvolutionStages evolutionStage={evolutionStage} firstForm={getPokemonFirstForm} secondForm={getPokemonSecondForm} lastForm={getPokemonLastForm}/>
+
+          <div className="ml-4 h-80 flex-1 ">
+            <h4 className="text-left text-xl font-semibold mb-4">Stats</h4>
+             {
+              pokemonData.stats.map(s => {
+                return <PokemonStats statsName={s.statName} statsNum = {s.statNum}/>
+              })
+             } 
+          </div>
+        </div>
     </div>
   );
 }
