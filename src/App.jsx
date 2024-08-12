@@ -15,6 +15,7 @@ function App() {
   const [switchPage, setSwitchPage] = useState("Pagination");
   const [pokemonIndex, setPokemonIndex] = useState(0);
   const [evolutionStage, setEvolutionStage] = useState();
+  const [pokemonAddInfo, setPokemonAddInfo] = useState();
 
   let content;
 
@@ -106,7 +107,6 @@ function App() {
       };
       // setPokemonSearchUrl(response);
 
-      // console.log(getPokemonData());
       setSearchPokemon("");
     } catch (error) {
       console.error(error);
@@ -130,9 +130,10 @@ function App() {
                 return {
                     evolves_from_species: evolves_from_species?.name || '',
                     egg_groups,
-                    flavor_text_entries: flavor_text_entries[6] || {},
+                    flavor_text_entries: flavor_text_entries[6] ,
                 };
             };
+
 
             const getPokemonEvolutionStages = async () => {
                 let evolutionStagesData = {
@@ -192,7 +193,8 @@ function App() {
             };
 
             await getPokemonEvolutionStages();
-            console.log(getPokemonData())
+            
+            setPokemonAddInfo(getPokemonData())
         } catch (error) {
             console.error("Error fetching Pokémon species:", error);
         
@@ -204,7 +206,7 @@ function App() {
 };
 
 
-console.log(evolutionStage)
+// console.log(pokemonAddInfo)
 
 
   const backToPaginationPg = () => {
@@ -230,6 +232,8 @@ console.log(evolutionStage)
       <PokemonPreview
         pokemonData={previewPokemon}
         closePage={backToPaginationPg}
+        evolutionStage={evolutionStage}
+        pokemonAddInfo={pokemonAddInfo}
       />
     );
   }

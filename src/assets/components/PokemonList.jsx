@@ -70,7 +70,7 @@ function PokemonList({
           return (
             <div
               key={i}
-              className={` text-sm text-center mt-2 px-5 py-1 rounded-md ${b}`}
+              className={` text-sm text-center mt-2 px-5 py-1 rounded-2xl ${b}`}
             >
               {b}
             </div>
