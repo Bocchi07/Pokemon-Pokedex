@@ -2,8 +2,10 @@ import React, {useState} from "react";
 import "../../App.css";
 import PokemonStats from "./PokemonStats.jsx"
 import PokemonEvolutionStages from "./PokemonEvolutionStages.jsx";
+import PokeballIcon from "../Icons/Pokeball.png"
+import Info from "../Icons/info.svg"
 
-function PokemonPreview({ pokemonData, closePage, evolutionStage, pokemonAddInfo }) {
+function PokemonPreview({handleEvolutionStagesPreview, pokemonData, closePage, evolutionStage, pokemonAddInfo, previewPokemon, prevPokemon, nextPokemon }) {
   const pokemonType = pokemonData.types[0];
   const [pokemonImg, setPokemonImg] = useState([]);
   
@@ -35,33 +37,105 @@ function PokemonPreview({ pokemonData, closePage, evolutionStage, pokemonAddInfo
     width: `${totalStatsPercent}%`,
   }
 
-  // console.log(totalStatsPercent);
+  let prevPokemonFix = () => {
+    if (prevPokemon){
+      const firstLetterOfName = prevPokemon && prevPokemon.name[0].toUpperCase();
+      const restOfTheName = prevPokemon && prevPokemon.name.slice(1);
+      const prevId = prevPokemon && prevPokemon.id;
+      
+      let pokemonFixID;
+      let pokemonFixName = firstLetterOfName + restOfTheName;
+  
+      switch (prevId.toString().length) {
+        case 1:
+          pokemonFixID = `#000${prevId}`;
+          break;
+        case 2:
+          pokemonFixID = `#00${prevId}`;
+          break;
+        case 3:
+          pokemonFixID = `#0${prevId}`;
+          break;
+        case 4:
+          pokemonFixID = `#0${prevId}`;
+          break;
+      }
+  
+      return {
+        id: pokemonFixID,
+        name: pokemonFixName
+      }
+    }
+  };
+
+  let nextPokemonFix = () => {
+    if (nextPokemon){
+      const firstLetterOfName = nextPokemon && nextPokemon.name[0].toUpperCase();
+      const restOfTheName = nextPokemon && nextPokemon.name.slice(1);
+      const nextId = nextPokemon && nextPokemon.id;
+  
+      let pokemonFixID;
+      let pokemonFixName = firstLetterOfName + restOfTheName;
+  
+      switch (nextId.toString().length) {
+        case 1:
+          pokemonFixID = `#000${nextId}`;
+          break;
+        case 2:
+          pokemonFixID = `#00${nextId}`;
+          break;
+        case 3:
+          pokemonFixID = `#0${nextId}`;
+          break;
+        case 4:
+          pokemonFixID = `#0${nextId}`;
+          break;
+      }
+  
+      return {
+        id: pokemonFixID,
+        name: pokemonFixName
+      }
+    }
+   
+  };
+
+  // console.log(nextPokemonFix())
 
   return (
-    <div className="h-[90vh] p-10  rounded-md">
+    <div className=" p-10  rounded-md relative">
       <div className="preview-container flex justify-between">
+
         <div>
-        <button onClick={closePage}> Back </button>
+          <button onClick={closePage}> Back </button>
         </div>
-       
+
+        
+        <div className=" text-left">
+              <h2 className="font-semibold text-lg">{prevPokemonFix() && prevPokemonFix().name}</h2>
+              <span className = "text-sm text-gray-600 font-semibold">{prevPokemonFix() && prevPokemonFix().id}</span>
+        </div>    
 
         <div className="z-10 mb-8 flex flex-col items-center content-center mx-auto ">
-                <div className="flex items-center gap-x-3 mb-2 ">
-                  <h1 className="text-3xl font-semibold">{pokemonData.name}</h1>
-                  <span className="text-gray-400 text-sm">{pokemonData.id}</span>
-                </div>
+            <div className="flex items-center gap-x-3 mb-2 ">
+              <img src={PokeballIcon} className="w-5" />
+              <h1 className="text-3xl font-semibold">{pokemonData.name}</h1>
+              <span className="text-gray-400 text-sm">{pokemonData.id}</span>
+            </div>
          </div>
 
-         <div>
 
-         </div>
+        <div className="text-right ">
+              <h2 className="font-semibold text-lg">{nextPokemonFix() && nextPokemonFix().name}</h2>
+              <span className = "text-sm text-gray-600 font-semibold">{nextPokemonFix() && nextPokemonFix().id}</span>
+        </div>  
       </div>
 
       <div className="flex w-full gap-3">
   
         <div className="relative w-[40%] h-96 p-2 block content-center text-center rounded-md"> 
             <img
-              src={pokemonData.sprite}
+              src={pokemonData.sprite || previewPokemon.sprites}
               alt="image_not_found"
               className={` bg-${pokemonType} max-w-[90%] flex items-end justify-center rounded-md mx-auto`}
             />
@@ -70,12 +144,16 @@ function PokemonPreview({ pokemonData, closePage, evolutionStage, pokemonAddInfo
         <div className=" rounded-md flex-1 p-7 text-left ">
           <div className="flex justify-between items-center">
               <div>
-                <h4 className="text-lg font-semibold mb-2">Facts</h4>
+                <div className = "flex align-center">
+                    <h4 className="text-lg font-semibold mb-2">Facts</h4>
+                    <img className="w-4 mb-2 ml-1" src={Info} />
+                </div>
+
                 <p className="text-sm">{pokemonFacts}</p>
               </div>  
-          </div>
-
-          <div className="mt-8 w-full grid grid-cols-4">      
+          </div> 
+   
+          <div className="relative mt-8 w-full grid grid-cols-4">
               <div>
                 <h4 className="text-lg mb-2 font-semibold">Height</h4>
                 <div className="w-28 text-sm px-2 py-1 rounded-md bg-gray-200 ">{getPokemonHeight}cm</div>
@@ -148,7 +226,13 @@ function PokemonPreview({ pokemonData, closePage, evolutionStage, pokemonAddInfo
               </div>
           </div>
 
-          <PokemonEvolutionStages evolutionStage={evolutionStage} firstForm={getPokemonFirstForm} secondForm={getPokemonSecondForm} lastForm={getPokemonLastForm}/>
+          <PokemonEvolutionStages 
+            evolutionStage={evolutionStage} 
+            firstForm={getPokemonFirstForm} 
+            secondForm={getPokemonSecondForm} 
+            lastForm={getPokemonLastForm}
+            handleEvolutionStagesPreview={handleEvolutionStagesPreview}
+            />
 
         </div>
 

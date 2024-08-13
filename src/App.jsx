@@ -16,6 +16,9 @@ function App() {
   const [pokemonIndex, setPokemonIndex] = useState(0);
   const [evolutionStage, setEvolutionStage] = useState();
   const [pokemonAddInfo, setPokemonAddInfo] = useState();
+  const [nextPokemonPreview, setNextPokemonPreview] = useState();
+  const [prevPokemonPreview, setPrevPokemonPreview] = useState();
+
 
   let content;
 
@@ -68,6 +71,7 @@ function App() {
     pokemonList();
   }, [page]);
 
+
   const prevPokemon = () => {
     setPage((p) => (p > 1 ? p - 1 : 1));
   };
@@ -92,7 +96,7 @@ function App() {
         return {
           id,
           name,
-          sprites: sprites.official - artwork.front_default,
+          sprites: sprites.other["official-artwork"].front_default,
           types: types.map((t) => t.type.name),
           height,
           weight,
@@ -113,121 +117,279 @@ function App() {
     }
   };
 
-  const handlePokemonPreview = (pokemonData) => {
+
+  let pokemonName;
+
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const handleEvolutionStagesPreview = async (data) => {
     setSwitchPage("PokemonPreview");
-    setPreviewPokemon(pokemonData);
-    const pokemonName = pokemonData.name.toLowerCase();
-
-    const getPokemonSpecies = async () => {
-        try {
-            const response = await axios.get(
-                `https://pokeapi.co/api/v2/pokemon-species/${pokemonName}`
-            );
-
-            const { evolves_from_species, egg_groups, flavor_text_entries } = response.data;
-
-            const getPokemonData = () => {
-                return {
-                    evolves_from_species: evolves_from_species?.name || '',
-                    egg_groups,
-                    flavor_text_entries: flavor_text_entries[6] ,
-                };
-            };
-
-
-            const getPokemonEvolutionStages = async () => {
-                let evolutionStagesData = {
-                    images: {
-                        firstForm: "",
-                        secondForm: "",
-                        thirdForm: "",
-                    },
-                    name: {
-                        firstForm: "",
-                        secondForm: "",
-                        thirdForm: "",
-                    },
-                    types: {
-                        firstForm: "",
-                        secondForm: "",
-                        thirdForm: "",
-                    },
-                    id: {
-                      firstForm: "",
-                      secondForm: "",
-                      thirdForm: "",
-                  }
-                };
-
-                const evolutionChainUrl = response.data.evolution_chain.url;
-                try {
-                    const res = await axios.get(evolutionChainUrl);
-                    const firstStage = res.data?.chain?.species?.name;
-                    const secondStage = res.data?.chain?.evolves_to?.[0]?.species?.name;
-                    const lastStage = res.data?.chain?.evolves_to?.[0]?.evolves_to?.[0]?.species?.name;
-
-                    evolutionStagesData.name.firstForm = firstStage || '';
-                    evolutionStagesData.name.secondForm = secondStage || '';
-                    evolutionStagesData.name.thirdForm = lastStage || '';
-
-                    const fetchEvolutionStages = async () => {
-                        try {
-                            const requests = [];
-                            const otherRequest = [];
-
-                            if (firstStage) requests.push(axios.get(`https://pokeapi.co/api/v2/pokemon/${firstStage}`));
-                            if (secondStage) requests.push(axios.get(`https://pokeapi.co/api/v2/pokemon/${secondStage}`));
-                            if (lastStage) requests.push(axios.get(`https://pokeapi.co/api/v2/pokemon/${lastStage}`));
-
-
-                            const responses = await Promise.all(requests);
-
-                            if (responses[0]) {
-                                evolutionStagesData.images.firstForm = responses[0]?.data?.sprites?.other["official-artwork"]?.front_default || '';
-                                evolutionStagesData.types.firstForm = responses[0]?.data?.types;
-                                evolutionStagesData.id.firstForm = responses[0]?.data?.id;
-                            }
-                            if (responses[1]) {
-                                evolutionStagesData.images.secondForm = responses[1]?.data?.sprites?.other["official-artwork"]?.front_default || '';
-                                evolutionStagesData.types.secondForm = responses[1]?.data?.types;
-                                evolutionStagesData.id.secondForm = responses[1]?.data?.id;
-                            }
-                            if (responses[2]) {
-                                evolutionStagesData.images.thirdForm = responses[2]?.data?.sprites?.other["official-artwork"]?.front_default || '';
-                                evolutionStagesData.types.thirdForm = responses[2]?.data?.types;
-                                evolutionStagesData.id.thirdForm = responses[2]?.data?.id;
-                            }
-
-                            // console.log(evolutionStagesData.id)
-                            setEvolutionStage(evolutionStagesData);
-                        } catch (error) {
-                            console.error("Error fetching Pokémon images:", error);
-                        }
-                    };
-
-                    // console.log(res.data.chain.species.url)
-                    await fetchEvolutionStages();
-                    // console.log(evolutionChainUrl)
-                } catch (error) {
-                    console.error("Error fetching evolution chain:", error);
-                }
-            };
-
-            await getPokemonEvolutionStages();
-            
-            setPokemonAddInfo(getPokemonData())
-        } catch (error) {
-            console.error("Error fetching Pokémon species:", error);
-        
-
-          }
-    };
-
+    scrollToTop();
+    pokemonName = data;
     getPokemonSpecies();
+
+    try {
+      const response = await axios.get(
+        `https://pokeapi.co/api/v2/pokemon/${data}`
+      );
+
+      const getPokemonData = () => {
+        const { id, name, sprites, stats, height, weight, types, abilities } =
+          response.data;
+
+        let sliceName = () => {
+          const firstLetterOfName = name[0].toUpperCase();
+          const restOfTheName = name.slice(1);
+
+          
+      
+          return firstLetterOfName + restOfTheName;
+        };
+
+        let pokemonFixID;
+        let prevId = id >= 1 ? id - 1 : 1;
+        let nextId = id + 1;
+
+        handlePrevPokemon(prevId);
+        handleNextPokemon(nextId);
+
+        console.log(prevId, nextId)
+
+        switch (id.toString().length) {
+          case 1:
+            pokemonFixID = `#000${id}`;
+            break;
+          case 2:
+            pokemonFixID = `#00${id}`;
+            break;
+          case 3:
+            pokemonFixID = `#0${id}`;
+            break;
+          case 4:
+            pokemonFixID = `#0${id}`;
+            break;
+        }
+
+        return {
+          id: pokemonFixID,
+          name: sliceName(),
+          sprites: sprites.other["official-artwork"].front_default,
+          types: types.map((t) => t.type.name),
+          height,
+          weight,
+          stats: stats.map((s) => {
+            return {
+              statNum: s.base_stat,
+              statName: s.stat.name,
+            };
+          }),
+          abilities: abilities.map((a) => a.ability.name),
+        };
+      };
+      
+      setPreviewPokemon(getPokemonData);
+ 
+    } catch (error) {
+      console.error(error);
+    }
+    
+    // console.log(previewPokemon)
+    
+  }
+
+  const handlePokemonPreview = (pokemonData, pokemonPrevId, pokemonNextId) => {
+    setSwitchPage("PokemonPreview");
+    scrollToTop();
+    setPreviewPokemon(pokemonData);
+    pokemonName = pokemonData.name.toLowerCase();
+    getPokemonSpecies();
+
+
+    handlePrevPokemon(pokemonPrevId)
+    handleNextPokemon(pokemonNextId)
+    // console.log(id)
 };
 
+  const handlePrevPokemon = async (pokemonPrevId) => {
+    try {
+      const response = await axios.get(
+        `https://pokeapi.co/api/v2/pokemon/${pokemonPrevId}`
+      );
 
-// console.log(pokemonAddInfo)
+      const getPokemonData = () => {
+        const { id, name, sprites, stats, height, weight, types, abilities } =
+          response.data;
+
+        return {
+          id,
+          name,
+          sprites: sprites.other["official-artwork"].front_default,
+          types: types.map((t) => t.type.name),
+          height,
+          weight,
+          stats: stats.map((s) => {
+            return {
+              statNum: s.base_stat,
+              statName: s.stat.name,
+            };
+          }),
+          abilities: abilities.map((a) => a.ability.name),
+        };
+      };
+
+      // setPokemonSearchUrl(response);
+      setPrevPokemonPreview(getPokemonData());
+       console.log(getPokemonData().name);
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  const handleNextPokemon = async (pokemonNextId) => {
+    try {
+      const response = await axios.get(
+        `https://pokeapi.co/api/v2/pokemon/${pokemonNextId}`
+      );
+
+      const getPokemonData = () => {
+        const { id, name, sprites, stats, height, weight, types, abilities } =
+          response.data;
+
+        return {
+          id,
+          name,
+          sprites: sprites.other["official-artwork"].front_default,
+          types: types.map((t) => t.type.name),
+          height,
+          weight,
+          stats: stats.map((s) => {
+            return {
+              statNum: s.base_stat,
+              statName: s.stat.name,
+            };
+          }),
+          abilities: abilities.map((a) => a.ability.name),
+        };
+      };
+
+      // setPokemonSearchUrl(response);
+      setNextPokemonPreview(getPokemonData());
+      //  console.log(getPokemonData().name);
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+
+  const getPokemonSpecies = async () => {
+    try {
+        const response = await axios.get(
+            `https://pokeapi.co/api/v2/pokemon-species/${pokemonName}`
+        );
+
+        const { evolves_from_species, egg_groups, flavor_text_entries } = response.data;
+
+        const getPokemonData = () => {
+            return {
+                evolves_from_species: evolves_from_species?.name || '',
+                egg_groups,
+                flavor_text_entries: flavor_text_entries[6] ,
+            };
+        };
+
+
+        const getPokemonEvolutionStages = async () => {
+            let evolutionStagesData = {
+                images: {
+                    firstForm: "",
+                    secondForm: "",
+                    thirdForm: "",
+                },
+                name: {
+                    firstForm: "",
+                    secondForm: "",
+                    thirdForm: "",
+                },
+                types: {
+                    firstForm: "",
+                    secondForm: "",
+                    thirdForm: "",
+                },
+                id: {
+                  firstForm: "",
+                  secondForm: "",
+                  thirdForm: "",
+              }
+            };
+
+            const evolutionChainUrl = response.data.evolution_chain.url;
+            try {
+                const res = await axios.get(evolutionChainUrl);
+                const firstStage = res.data?.chain?.species?.name;
+                const secondStage = res.data?.chain?.evolves_to?.[0]?.species?.name;
+                const lastStage = res.data?.chain?.evolves_to?.[0]?.evolves_to?.[0]?.species?.name;
+
+                evolutionStagesData.name.firstForm = firstStage || '';
+                evolutionStagesData.name.secondForm = secondStage || '';
+                evolutionStagesData.name.thirdForm = lastStage || '';
+
+                const fetchEvolutionStages = async () => {
+                    try {
+                        const requests = [];
+                        const otherRequest = [];
+
+                        if (firstStage) requests.push(axios.get(`https://pokeapi.co/api/v2/pokemon/${firstStage}`));
+                        if (secondStage) requests.push(axios.get(`https://pokeapi.co/api/v2/pokemon/${secondStage}`));
+                        if (lastStage) requests.push(axios.get(`https://pokeapi.co/api/v2/pokemon/${lastStage}`));
+
+
+                        const responses = await Promise.all(requests);
+
+                        if (responses[0]) {
+                            evolutionStagesData.images.firstForm = responses[0]?.data?.sprites?.other["official-artwork"]?.front_default || '';
+                            evolutionStagesData.types.firstForm = responses[0]?.data?.types;
+                            evolutionStagesData.id.firstForm = responses[0]?.data?.id;
+                        }
+                        if (responses[1]) {
+                            evolutionStagesData.images.secondForm = responses[1]?.data?.sprites?.other["official-artwork"]?.front_default || '';
+                            evolutionStagesData.types.secondForm = responses[1]?.data?.types;
+                            evolutionStagesData.id.secondForm = responses[1]?.data?.id;
+                        }
+                        if (responses[2]) {
+                            evolutionStagesData.images.thirdForm = responses[2]?.data?.sprites?.other["official-artwork"]?.front_default || '';
+                            evolutionStagesData.types.thirdForm = responses[2]?.data?.types;
+                            evolutionStagesData.id.thirdForm = responses[2]?.data?.id;
+                        }
+
+                        // console.log(evolutionStagesData.id)
+                        setEvolutionStage(evolutionStagesData);
+                    } catch (error) {
+                        console.error("Error fetching Pokémon images:", error);
+                    }
+                };
+
+                // console.log(res.data.chain.species.url)
+                await fetchEvolutionStages();
+                console.log(evolutionStagesData)
+            } catch (error) {
+                console.error("Error fetching evolution chain:", error);
+            }
+        };
+
+        await getPokemonEvolutionStages();
+        
+        setPokemonAddInfo(getPokemonData())
+    } catch (error) {
+        console.error("Error fetching Pokémon species:", error);
+    
+
+      }
+  };
+
+
+// console.log(previewPokemon)
 
 
   const backToPaginationPg = () => {
@@ -255,11 +417,15 @@ function App() {
         closePage={backToPaginationPg}
         evolutionStage={evolutionStage}
         pokemonAddInfo={pokemonAddInfo}
+        handleEvolutionStagesPreview={handleEvolutionStagesPreview}
+        previewPokemon={previewPokemon}
+        prevPokemon={prevPokemonPreview}
+        nextPokemon = {nextPokemonPreview}
       />
     );
   }
 
-  return <>{content}</>;
+  return <>{content}</>
 }
 
 export default App;

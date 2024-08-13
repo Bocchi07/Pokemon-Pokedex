@@ -1,7 +1,7 @@
 import React, {useState} from 'react'
 import "../../App.css"
 
-function PokemonEvolutionStages({evolutionStage, firstForm, secondForm, lastForm}) {
+function PokemonEvolutionStages({handleEvolutionStagesPreview, evolutionStage, firstForm, secondForm, lastForm}) {
    
     const handlePokemonName = () => {   
         if (evolutionStage){
@@ -75,8 +75,11 @@ function PokemonEvolutionStages({evolutionStage, firstForm, secondForm, lastForm
       }
   }
 
-
-    // console.log(evolutionStage.types)
+    const firstPokemon = handlePokemonName() ? handlePokemonName().first.toLowerCase() : " hello";
+    const secondPokemon = handlePokemonName() ? handlePokemonName().second.toLowerCase() : " hello";
+    const thirdPokemon = handlePokemonName() ? handlePokemonName().third.toLowerCase() : " hello";
+   
+    // console.log(firstPokemon, secondPokemon, thirdPokemon)
 
     return (
     <div className="w-full h-80 mt-20">
@@ -85,7 +88,7 @@ function PokemonEvolutionStages({evolutionStage, firstForm, secondForm, lastForm
         <div className='flex justify-around items-center gap-x-8 pr-4 p-8'>
             <div className='w-[25%]'>
                     {firstForm && 
-                        <div className="evolution-stages flex justify-center items-center bg-gray-100 p-8 rounded-full my-auto hover-bg-gray-300">
+                        <div onClick={() => handleEvolutionStagesPreview(firstPokemon)} className="evolution-stages flex justify-center items-center bg-gray-100 p-8 rounded-full my-auto hover-bg-gray-300">
                             <img src={firstForm}/>
                         </div>
                     }
@@ -113,7 +116,7 @@ function PokemonEvolutionStages({evolutionStage, firstForm, secondForm, lastForm
                         secondForm && 
                         <div  className='w-[25%]'>   
                             {secondForm && 
-                                <div className="evolution-stages flex justify-center items-center bg-gray-100 p-8 rounded-full my-auto">
+                                <div onClick={() => handleEvolutionStagesPreview(secondPokemon)} className="evolution-stages flex justify-center items-center bg-gray-100 p-8 rounded-full my-auto">
                                     <img src={secondForm}/>
                                 </div>
                                 }
@@ -140,7 +143,7 @@ function PokemonEvolutionStages({evolutionStage, firstForm, secondForm, lastForm
                     {lastForm && 
                         <div  className='w-[25%]'>
                         {lastForm && 
-                            <div className="evolution-stages  flex justify-center items-center bg-gray-100 p-8 rounded-full my-auto ">
+                            <div onClick={() => handleEvolutionStagesPreview(thirdPokemon)} className="evolution-stages  flex justify-center items-center bg-gray-100 p-8 rounded-full my-auto ">
                               <img src={lastForm}/>
                             </div>
                             }

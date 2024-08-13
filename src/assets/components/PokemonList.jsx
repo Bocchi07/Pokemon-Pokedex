@@ -15,6 +15,10 @@ function PokemonList({
 }) {
   const mapTesting = pokemonTypes.map((t) => t);
   let pokemonFixID;
+  let pokemonPrevId = pokemonId >= 1 ? pokemonId - 1 : 1;
+  let pokemonNextId = pokemonId + 1 ;
+
+  // console.log(pokemonPrevId)
 
   let sliceName = () => {
     const firstLetterOfName = pokemonName[0].toUpperCase();
@@ -49,13 +53,12 @@ function PokemonList({
     stats: stats,
   };
 
-  // console.log(pokemonData);
 
   return (
     <section
       key={keyItem}
       className="pokemon-list-container bg-white rounded-xl h-56 max-h-68  flex flex-col items-center "
-      onClick={() => handlePokemonPreview(pokemonData)}
+      onClick={() => handlePokemonPreview(pokemonData, pokemonPrevId, pokemonNextId)}
     >
       <img
         src={pokemonSprite}
