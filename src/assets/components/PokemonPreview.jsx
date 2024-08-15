@@ -4,8 +4,11 @@ import PokemonStats from "./PokemonStats.jsx"
 import PokemonEvolutionStages from "./PokemonEvolutionStages.jsx";
 import PokeballIcon from "../Icons/Pokeball.png"
 import Info from "../Icons/info.svg"
+import leftArrow from "../Icons/left-arrow.svg";
+import rightArrow from "../Icons/right-arrow.svg";
 
-function PokemonPreview({handleEvolutionStagesPreview, pokemonData, closePage, evolutionStage, pokemonAddInfo, previewPokemon, prevPokemon, nextPokemon }) {
+
+function PokemonPreview({handleEvolutionStagesPreview, pokemonData, closePage, evolutionStage, pokemonAddInfo, previewPokemon, prevPokemon, nextPokemon, loading }) {
   const pokemonType = pokemonData.types[0];
   const [pokemonImg, setPokemonImg] = useState([]);
   
@@ -103,17 +106,20 @@ function PokemonPreview({handleEvolutionStagesPreview, pokemonData, closePage, e
   // console.log(nextPokemonFix())
 
   return (
-    <div className=" p-10  rounded-md relative">
-      <div className="preview-container flex justify-between">
-
-        <div>
+    <div className="pokemon-preview p-10  rounded-md relative">  
+      <div>
           <button onClick={closePage}> Back </button>
         </div>
 
-        
-        <div className=" text-left">
-              <h2 className="font-semibold text-lg">{prevPokemonFix() && prevPokemonFix().name}</h2>
-              <span className = "text-sm text-gray-600 font-semibold">{prevPokemonFix() && prevPokemonFix().id}</span>
+      <div className="preview-container flex justify-between">
+       <div className="prev-container text-left flex ">
+          <img className="w-7 text-right mb-auto mr-2 cursor-pointer rotate-180" src={rightArrow} alt="" />
+
+              <div className="opacity-70">
+                  <h2 className="font-semibold text-lg">{prevPokemonFix() && prevPokemonFix().name}</h2>
+                 <span className ="span-id text-sm text-gray-600 font-semibold">{prevPokemonFix() && prevPokemonFix().id}</span>
+              </div>
+            
         </div>    
 
         <div className="z-10 mb-8 flex flex-col items-center content-center mx-auto ">
@@ -125,9 +131,13 @@ function PokemonPreview({handleEvolutionStagesPreview, pokemonData, closePage, e
          </div>
 
 
-        <div className="text-right ">
-              <h2 className="font-semibold text-lg">{nextPokemonFix() && nextPokemonFix().name}</h2>
-              <span className = "text-sm text-gray-600 font-semibold">{nextPokemonFix() && nextPokemonFix().id}</span>
+        <div className="next-container text-right flex">
+          <div className="opacity-70">
+            <h2 className="font-semibold text-lg">{nextPokemonFix() && nextPokemonFix().name}</h2>
+            <span className = "span-id text-sm text-gray-600 font-semibold">{nextPokemonFix() && nextPokemonFix().id}</span>
+          </div>
+
+          <img className="w-7 text-right mb-auto ml-2 cursor-pointer" src={rightArrow} alt="" />
         </div>  
       </div>
 
@@ -137,7 +147,7 @@ function PokemonPreview({handleEvolutionStagesPreview, pokemonData, closePage, e
             <img
               src={pokemonData.sprite || previewPokemon.sprites}
               alt="image_not_found"
-              className={` bg-${pokemonType} max-w-[90%] flex items-end justify-center rounded-md mx-auto`}
+              className={` bg-${pokemonType} max-w-[90%] flex items-end justify-center rounded-md mx-auto ${loading ? "loading" : " "}`}
             />
         </div>
 

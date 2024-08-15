@@ -3,6 +3,7 @@ import "./App.css";
 import Pagination from "./assets/components/Pagination";
 import axios from "axios";
 import PokemonPreview from "./assets/components/PokemonPreview.jsx";
+import LoadingImg from "./assets/Images/loading-images.gif"
 
 function App() {
   const [page, setPage] = useState(1);
@@ -18,13 +19,33 @@ function App() {
   const [pokemonAddInfo, setPokemonAddInfo] = useState();
   const [nextPokemonPreview, setNextPokemonPreview] = useState();
   const [prevPokemonPreview, setPrevPokemonPreview] = useState();
-
-
+  
   let content;
+  let pokemonName;
+
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+
+  const addFadeOut = () => {
+    let messageElem = document.querySelector(".loading-message-container");
+    
+    if (messageElem){
+       if(!loading){
+      messageElem.classList.add("fade-out");
+    } else{
+      messageElem.classList.remove("fade-out");
+    }
+    }
+  }
 
   useEffect(() => {
+    setLoading(true)
+
     const pokemonList = async () => {
       setLoading(true);
+
       try {
         const offset = (page - 1) * 20;
         const response = await axios.get(
@@ -63,20 +84,27 @@ function App() {
         // console.log(pokemonDetailsResponses);
       } catch (error) {
         console.error(error);
-      } finally {
-        setLoading(false);
+      } finally {   
+          setLoading(false);
+          addFadeOut()
+        }
       }
-    };
 
-    pokemonList();
+    return () => {
+      pokemonList()
+      setLoading(false)
+      addFadeOut()
+    }
   }, [page]);
 
 
   const prevPokemon = () => {
     setPage((p) => (p > 1 ? p - 1 : 1));
+    scrollToTop()
   };
   const nextPokemon = () => {
     setPage((p) => p + 1);
+    scrollToTop()
   };
 
   const handlePokemonInput = (e) => {
@@ -118,13 +146,9 @@ function App() {
   };
 
 
-  let pokemonName;
-
-  const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
-
   const handleEvolutionStagesPreview = async (data) => {
+    setLoading(true)
+
     setSwitchPage("PokemonPreview");
     scrollToTop();
     pokemonName = data;
@@ -194,12 +218,16 @@ function App() {
     } catch (error) {
       console.error(error);
     }
-    
     // console.log(previewPokemon)
-    
+    setTimeout(() => {
+        setLoading(false)
+        addFadeOut()
+    }, 500)
+  
   }
 
   const handlePokemonPreview = (pokemonData, pokemonPrevId, pokemonNextId) => {
+    setLoading(true)
     setSwitchPage("PokemonPreview");
     scrollToTop();
     setPreviewPokemon(pokemonData);
@@ -209,6 +237,7 @@ function App() {
 
     handlePrevPokemon(pokemonPrevId)
     handleNextPokemon(pokemonNextId)
+    setLoading(false)
     // console.log(id)
 };
 
@@ -383,8 +412,6 @@ function App() {
         setPokemonAddInfo(getPokemonData())
     } catch (error) {
         console.error("Error fetching Pokémon species:", error);
-    
-
       }
   };
 
@@ -396,6 +423,10 @@ function App() {
     setSwitchPage("Pagination");
   };
 
+  const loadingPage = <div className="loading-message-container flex flex-col items-center justify-center h-[90vh]"> 
+                          <img src={LoadingImg} alt="" className="w-[20%] mb-4"/>
+                          <h5 className="text-xl font-bold loading-message">Loading <span>...</span></h5>
+                      </div>
   // console.log("hello", evolutionStage);
 
   if (switchPage === "Pagination") {
@@ -413,6 +444,7 @@ function App() {
   } else if (switchPage === "PokemonPreview") {
     content = (
       <PokemonPreview
+        loading = {loading}
         pokemonData={previewPokemon}
         closePage={backToPaginationPg}
         evolutionStage={evolutionStage}
@@ -424,8 +456,9 @@ function App() {
       />
     );
   }
+  
 
-  return <>{content}</>
+  return <>{loading ? loadingPage : content}</>
 }
 
 export default App;
