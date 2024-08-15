@@ -1,5 +1,5 @@
 import React, {useState} from 'react'
-import "../../App.css"
+import "../App.css"
 
 function PokemonEvolutionStages({handleEvolutionStagesPreview, evolutionStage, firstForm, secondForm, lastForm}) {
    

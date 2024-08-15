@@ -1,11 +1,11 @@
 import React, {useState} from "react";
-import "../../App.css";
+import "../App.css";
 import PokemonStats from "./PokemonStats.jsx"
 import PokemonEvolutionStages from "./PokemonEvolutionStages.jsx";
-import PokeballIcon from "../Icons/Pokeball.png"
-import Info from "../Icons/info.svg"
-import leftArrow from "../Icons/left-arrow.svg";
-import rightArrow from "../Icons/right-arrow.svg";
+import PokeballIcon from "../assets/Icons/Pokeball.png"
+import Info from "../assets/Icons/info.svg"
+import leftArrow from "../assets/Icons/left-arrow.svg";
+import rightArrow from "../assets/Icons/right-arrow.svg";
 
 
 function PokemonPreview({handleEvolutionStagesPreview, pokemonData, closePage, evolutionStage, pokemonAddInfo, previewPokemon, prevPokemon, nextPokemon, loading }) {
