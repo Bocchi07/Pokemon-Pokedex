@@ -8,7 +8,7 @@ import leftArrow from "../assets/Icons/left-arrow.svg";
 import rightArrow from "../assets/Icons/right-arrow.svg";
 
 
-function PokemonPreview({handleEvolutionStagesPreview, pokemonData, closePage, evolutionStage, pokemonAddInfo, previewPokemon, prevPokemon, nextPokemon, loading }) {
+function PokemonPreview({handleEvolutionStagesPreview, pokemonData, closePage, evolutionStage, pokemonAddInfo, previewPokemon, prevPokemon, nextPokemon, loading, switchNextPage, switchPrevPage }) {
   const pokemonType = pokemonData.types[0];
   const [pokemonImg, setPokemonImg] = useState([]);
   
@@ -106,14 +106,14 @@ function PokemonPreview({handleEvolutionStagesPreview, pokemonData, closePage, e
   // console.log(nextPokemonFix())
 
   return (
-    <div className="pokemon-preview p-10  rounded-md relative">  
+    <div className="pokemon-preview p-10  rounded-md relative mt-12">  
       <div>
           <button onClick={closePage}> Back </button>
         </div>
 
       <div className="preview-container flex justify-between">
        <div className="prev-container text-left flex ">
-          <img className="w-7 text-right mb-auto mr-2 cursor-pointer rotate-180" src={rightArrow} alt="" />
+          <img className="w-7 text-right mb-auto mr-2 cursor-pointer rotate-180" src={rightArrow} alt="" onClick={switchPrevPage} disabled={!prevPokemon}/>
 
               <div className="opacity-70">
                   <h2 className="font-semibold text-lg">{prevPokemonFix() && prevPokemonFix().name}</h2>
@@ -137,7 +137,7 @@ function PokemonPreview({handleEvolutionStagesPreview, pokemonData, closePage, e
             <span className = "span-id text-sm text-gray-600 font-semibold">{nextPokemonFix() && nextPokemonFix().id}</span>
           </div>
 
-          <img className="w-7 text-right mb-auto ml-2 cursor-pointer" src={rightArrow} alt="" />
+          <img className="w-7 text-right mb-auto ml-2 cursor-pointer" src={rightArrow} alt="" onClick={switchNextPage} disabled={!nextPokemon}/>
         </div>  
       </div>
 

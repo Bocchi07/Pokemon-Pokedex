@@ -4,6 +4,8 @@ import Pagination from "./components/Pagination.jsx";
 import axios from "axios";
 import PokemonPreview from "./components/PokemonPreview.jsx";
 import LoadingImg from "./assets/Images/loading-images.gif";
+import Header from "./components/Header.jsx";
+import FilteringSection from "./components/FilteringSection.jsx"
 
 function App() {
   const [page, setPage] = useState(1);
@@ -21,6 +23,8 @@ function App() {
   const [prevPokemonPreview, setPrevPokemonPreview] = useState();
 
   let pokemonName;
+
+  console.log(page)
 
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -58,7 +62,7 @@ function App() {
             res.data;
           return {
             id,
-            name,
+            name: name[0] + name.slice(1),
             types: types.map((info) => info.type.name),
             sprites: sprites.other["official-artwork"].front_default,
             height,
@@ -103,7 +107,8 @@ function App() {
 
   const [searchError, setSearchError] = useState("");
 
-  const handleSearchedPokemon = async () => {
+  const handleSearchedPokemon = async (e) => {
+
     try {
       setLoading(true);
       setSearchError(""); // Clear any previous error messages
@@ -448,15 +453,23 @@ function App() {
     );
   } else if (switchPage === "Pagination") {
     content = (
-      <Pagination
-        prevBtn={prevPokemon}
-        nextBtn={nextPokemon}
-        searchPokemon={searchPokemon}
-        handleSearch={handlePokemonInput}
-        searchedPokemon={handleSearchedPokemon}
-        currentPokemon={currentPokemon}
-        handlePokemonPreview={handlePokemonPreview}
-      />
+      <div className="flex gap-x-4 ">
+        <FilteringSection 
+          searchPokemon={searchPokemon}
+          handleSearch={handlePokemonInput}
+          searchedPokemon={handleSearchedPokemon}
+        />
+        <Pagination
+          prevBtn={prevPokemon}
+          nextBtn={nextPokemon}
+          searchPokemon={searchPokemon}
+          handleSearch={handlePokemonInput}
+          searchedPokemon={handleSearchedPokemon}
+          currentPokemon={currentPokemon}
+          handlePokemonPreview={handlePokemonPreview}
+          page ={page}
+        />
+      </div>
     );
   } else if (switchPage === "PokemonPreview") {
     content = (
@@ -476,7 +489,11 @@ function App() {
     );
   }
 
-  return <>{loading ? loadingPage : content}</>;
+  return(
+  <>
+    <Header /> 
+    {loading ? loadingPage : content}
+  </>)
 }
 
 export default App;

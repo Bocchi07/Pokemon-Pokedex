@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import PokemonList from "./PokemonList.jsx";
+import { MdOutlineKeyboardDoubleArrowLeft } from "react-icons/md";
+import { MdKeyboardDoubleArrowRight } from "react-icons/md";
 
 function Pagination({
   prevBtn,
@@ -9,11 +11,12 @@ function Pagination({
   searchedPokemon,
   currentPokemon,
   handlePokemonPreview,
+  page
 }) {
   // console.log(currentPokemon);
   return (
-    <div className="bg-gray-100 w-[100%] h-[90%] rounded-md p-4">
-      <div className=" border-slate-600 border-solid  py-8 ">
+    <div className="ml-[20%] w-[100%] h-[90%] rounded-md p-4 mt-20">
+      {/* <div className=" border-slate-600 border-solid  py-8 ">
         <input
           type="text"
           placeholder="Enter a name or id"
@@ -28,8 +31,7 @@ function Pagination({
         >
           Search
         </button>
-      </div>
-
+      </div> */}
       <div className=" w-full grid grid-cols-3 gap-y-5 gap-x-4">
         {currentPokemon.map((c, index) => {
           return (
@@ -49,12 +51,17 @@ function Pagination({
         })}
       </div>
 
-      <button onClick={prevBtn} type="button">
-        Prev
-      </button>
-      <button onClick={nextBtn} type="button">
-        Next
-      </button>
+  
+      <div className="mx-auto mt-10 shadow-md bg-white rounded-md py-2 px-4 w-40 flex justify-center align-center">
+          <button onClick={prevBtn} type="button" className="w-[20%]" >
+             <MdOutlineKeyboardDoubleArrowLeft />
+          </button>
+          <h2 className="flex-1">{page}</h2>
+          <button onClick={nextBtn} type="button" className="w-[20%]" >
+             <MdKeyboardDoubleArrowRight  />
+          </button>
+      </div>
+  
     </div>
   );
 }

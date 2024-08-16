@@ -1,12 +1,12 @@
 #root {
   max-width: 1280px;
   margin: 0 auto;
-  padding: 2rem;
   text-align: center;
 }
 
 body {
   font-family: Arial, Helvetica, sans-serif;
+  background-color: hsl(190, 80%, 99%);
 }
 
 footer{
@@ -18,10 +18,16 @@ input[type="text"] {
   padding-left: 1em;
 }
 
+summary{
+  text-decoration: none;
+  list-style: none;
+}
+
 .pokemon-list-container {
-  box-shadow: 0 2px 0.3rem rgba(32, 49, 51, 0.26);
   cursor: pointer;
 }
+
+
 
 .pokemon-list-container .pokemon-img {
   transition: all 200ms ease-in-out;
@@ -218,4 +224,42 @@ input[type="text"] {
 
 .loading-message-container.fade-out{
   opacity: 0;
+}
+
+.filtering-pokemon div{
+  align-items: center;
+  border-bottom: 1px solid rgba(128, 128, 128, 0.452);
+}
+
+.filtering-pokemon select{
+  border: none;
+  outline: none;
+  font-size: 1rem;
+  border-radius: .5rem;
+  width: 100%;
+}
+
+.search-pokemon{
+  border: 1px solid rgba(14, 14, 14, 0.127);
+}
+
+option{
+  border: none;
+  font-size: medium;
+  border-radius: .5rem;
+  outline: none;
+}
+
+.filter-container{
+  border: 1px solid rgba(128, 128, 128, 0.452);
+  border-left: none;
+  border-right: none;
+  border-top: none;
+  margin-bottom: .4rem;
+  padding-bottom: 1rem;
+}
+
+.sort-by{
+  border:  1px solid rgba(65, 63, 63, 0.2);
+  outline: none;
 }
