@@ -1,14 +1,22 @@
 import React, { useState, useRef } from 'react';
 import { RxMixerHorizontal } from "react-icons/rx";
 import { IoIosArrowDown } from "react-icons/io";
-import "../App.css"
-import Pokeball from "../assets/Icons/Pokeball.png"
+import "../../App.css"
+import Pokeball from "../../assets/Icons/Pokeball.png"
+import "./filter.css"
 
 function FilteringSection({searchPokemon, handleSearch, searchedPokemon}) {
+  const [activeIndex, setActiveIndex] = useState();
+
+  const handleClick = (index) => {
+    setActiveIndex(activeIndex === index ? null : index);
+    console.log(index)
+  };
+
+  const filterContent = ["Types", "Generation", "Region", "Moves"];
 
   return (
-    <div className='w-[20%] bg-white shadow-md bottom-0 fixed  top-10 py-4 pt-9 px-4'>
-
+    <div className='w-64 bg-white shadow-md bottom-0 fixed  top-10 py-4 pt-9 px-4 overflow-y-scroll'>
       <div className='relative'>
         <form action="" onSubmit={searchedPokemon}>
           <input 
@@ -29,8 +37,6 @@ function FilteringSection({searchPokemon, handleSearch, searchedPokemon}) {
          <h5 className='font-semibold text-xl'>Filter</h5>
       </div>
 
-
-
       <div className='filter-container flex flex-col gap-y-4align-center text-left justify-start mt-8'>
          <h5 className='font-semibold text-md'>Sort by</h5>
          <select name="" id="" className = "sort-by mt-2 w-36 rounded-md text-sm py-2 px-2 shadow-sm">
@@ -39,31 +45,23 @@ function FilteringSection({searchPokemon, handleSearch, searchedPokemon}) {
       </div>
 
       <div className='filtering-pokemon grid grid-rows-4 mt-4 '>
-        <div>
-          <select name="" id="" className=' text-sm py-4 '>
-            <option value="">Type</option>
-          </select>
-        </div>
-    
-        <div>
-          <select name="" id="" className=' text-sm py-4'> 
-            <option value="">Region</option>
-          </select>
-        </div>
-       
-        <div>
-          <select name="" id="" className=' text-sm py-4 '>
-            <option value="">Ability</option>
-          </select>
-        </div>
-
-        
-        <div>
-            <select name="" id="" className=' text-sm py-4 '>
-                <option value="">Generation</option>
-            </select>
-        </div>
+        {
+          filterContent.map((f, index) => {
+            return (
+              <div className={`details-wrapper ${activeIndex === index ? "active" : null }`} key={index} onClick={() => handleClick(index)}>
+                  <details>
+                    <summary>{f}</summary>
+                    {
+                      f === "Types" ? <h1>Hello</h1> : null
+                    }
+                  </details>
       
+                  <IoIosArrowDown className={`show-more-icon`}/>
+              </div>
+            )
+          } )
+        }
+
       </div>
     </div>
   );

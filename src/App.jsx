@@ -5,7 +5,7 @@ import axios from "axios";
 import PokemonPreview from "./components/PokemonPreview.jsx";
 import LoadingImg from "./assets/Images/loading-images.gif";
 import Header from "./components/Header.jsx";
-import FilteringSection from "./components/FilteringSection.jsx"
+import FilteringSection from "./components/Filter/FilteringSection.jsx"
 
 function App() {
   const [page, setPage] = useState(1);
@@ -21,10 +21,9 @@ function App() {
   const [pokemonAddInfo, setPokemonAddInfo] = useState();
   const [nextPokemonPreview, setNextPokemonPreview] = useState();
   const [prevPokemonPreview, setPrevPokemonPreview] = useState();
+  const [prevEndPoint, setPrevEndPoint] = useState(false)
 
   let pokemonName;
-
-  console.log(page)
 
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -177,8 +176,6 @@ function App() {
     }
   };
   
-
-
   const handleEvolutionStagesPreview = async (data) => {
     setLoading(true);
     setSwitchPage("PokemonPreview");
@@ -265,6 +262,11 @@ function App() {
     }
     await handleNextPokemon(pokemonNextId);
   
+    // if(previewPokemon.id == "#0001"){
+    //   setPrevEndPoint(true)
+    // } 
+
+    console.log(previewPokemon)
     setLoading(false);
   };
 
@@ -275,7 +277,7 @@ function App() {
         const { id, name, sprites, stats, height, weight, types, abilities } = response.data;
         return {
           id,
-          name,
+          name : name[0].toUpperCase() + name.slice(1),
           sprites: sprites.other["official-artwork"].front_default,
           types: types.map((t) => t.type.name),
           height,
@@ -287,6 +289,7 @@ function App() {
           abilities: abilities.map((a) => a.ability.name),
         };
       };
+
       setPrevPokemonPreview(getPokemonData());
     } catch (error) {
       console.error(error);
@@ -300,7 +303,7 @@ function App() {
         const { id, name, sprites, stats, height, weight, types, abilities } = response.data;
         return {
           id,
-          name,
+          name : name[0].toUpperCase() + name.slice(1),
           sprites: sprites.other["official-artwork"].front_default,
           types: types.map((t) => t.type.name),
           height,
@@ -312,7 +315,9 @@ function App() {
           abilities: abilities.map((a) => a.ability.name),
         };
       };
+      
       setNextPokemonPreview(getPokemonData());
+      // console.log()
     } catch (error) {
       console.error(error);
     }
@@ -414,23 +419,37 @@ function App() {
   };
 
   const switchPrevPage = () => {
+    if(previewPokemon.id === 1){
+      setPrevEndPoint(true)
+      return
+    } 
+
     if (prevPokemonPreview) {
       const prevId = prevPokemonPreview.id;
-      const nextId = nextPokemonPreview ? nextPokemonPreview.id : prevId + 1;
-      handlePokemonPreview(prevPokemonPreview, prevId - 1, nextId);
+      const nextId = nextPokemonPreview ? nextPokemonPreview.id: prevId + 1;
+      handlePokemonPreview(prevPokemonPreview, prevId - 1, nextId - 1);
     }
   };
 
   const switchNextPage = () => {
     if (nextPokemonPreview) {
-      const prevId = prevPokemonPreview ? prevPokemonPreview.id : null;
+      const prevId = prevPokemonPreview ? prevPokemonPreview.id: null;
       const nextId = nextPokemonPreview.id + 1;
-      handlePokemonPreview(nextPokemonPreview, prevId, nextId);
+      handlePokemonPreview(nextPokemonPreview, prevId + 1, nextId);
     }
+
+    console.log(nextPokemonPreview);
+    setPrevEndPoint(false)
   };
 
   const backToPaginationPg = () => {
     setSwitchPage("Pagination");
+    setPrevEndPoint(false)
+    setPreviewPokemon(null)
+    setPokemonAddInfo(null)
+    setEvolutionStage(null)
+    setNextPokemonPreview(null)
+    setPrevPokemonPreview(null)
   };
 
   const loadingPage = (
@@ -485,6 +504,8 @@ function App() {
         nextPokemon={nextPokemonPreview}
         switchPrevPage={switchPrevPage}
         switchNextPage={switchNextPage}
+        prevEndPoint = {prevEndPoint}
+        prevSetEndPoint = {setPrevEndPoint}
       />
     );
   }

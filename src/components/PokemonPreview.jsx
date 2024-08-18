@@ -4,13 +4,14 @@ import PokemonStats from "./PokemonStats.jsx"
 import PokemonEvolutionStages from "./PokemonEvolutionStages.jsx";
 import PokeballIcon from "../assets/Icons/Pokeball.png"
 import Info from "../assets/Icons/info.svg"
-import leftArrow from "../assets/Icons/left-arrow.svg";
 import rightArrow from "../assets/Icons/right-arrow.svg";
 
 
-function PokemonPreview({handleEvolutionStagesPreview, pokemonData, closePage, evolutionStage, pokemonAddInfo, previewPokemon, prevPokemon, nextPokemon, loading, switchNextPage, switchPrevPage }) {
+function PokemonPreview({handleEvolutionStagesPreview, pokemonData, closePage, evolutionStage, pokemonAddInfo, previewPokemon, prevPokemon, nextPokemon, loading, switchNextPage, switchPrevPage, prevEndPoint, prevSetEndPoint }) {
   const pokemonType = pokemonData.types[0];
   const [pokemonImg, setPokemonImg] = useState([]);
+  let totalStats = 0;
+
   
   const pokemonFacts = pokemonAddInfo ? pokemonAddInfo.flavor_text_entries.flavor_text : " ";
   const pokemonEggGroups = pokemonAddInfo ? pokemonAddInfo.egg_groups.map(e => <option >{e.name}</option>) : null;
@@ -22,9 +23,7 @@ function PokemonPreview({handleEvolutionStagesPreview, pokemonData, closePage, e
   const getPokemonSecondForm = evolutionStage &&  evolutionStage.images.secondForm;
   const getPokemonLastForm = evolutionStage &&  evolutionStage.images.thirdForm;
 
-
-  // console.log(evolutionStage);
-  let totalStats = 0;
+  const currentPokemonID = String(pokemonData.id).padStart(4, "0")
 
   const handleTotalStats = () => {
     const mapStats = pokemonData && pokemonData.stats.map(s => totalStats += s.statNum);
@@ -112,12 +111,12 @@ function PokemonPreview({handleEvolutionStagesPreview, pokemonData, closePage, e
         </div>
 
       <div className="preview-container flex justify-between">
-       <div className="prev-container text-left flex ">
+       <div className={`prev-container text-left flex ${prevEndPoint ? "active" : ''}`}>
           <img className="w-7 text-right mb-auto mr-2 cursor-pointer rotate-180" src={rightArrow} alt="" onClick={switchPrevPage} disabled={!prevPokemon}/>
 
               <div className="opacity-70">
                   <h2 className="font-semibold text-lg">{prevPokemonFix() && prevPokemonFix().name}</h2>
-                 <span className ="span-id text-sm text-gray-600 font-semibold">{prevPokemonFix() && prevPokemonFix().id}</span>
+                 <span className ="span-id text-sm text-gray-600 font-semibold">{prevPokemonFix() && prevPokemonFix().id }</span>
               </div>
             
         </div>    
@@ -125,8 +124,8 @@ function PokemonPreview({handleEvolutionStagesPreview, pokemonData, closePage, e
         <div className="z-10 mb-8 flex flex-col items-center content-center mx-auto ">
             <div className="flex items-center gap-x-3 mb-2 ">
               <img src={PokeballIcon} className="w-5" />
-              <h1 className="text-3xl font-semibold">{pokemonData.name}</h1>
-              <span className="text-gray-400 text-sm">{pokemonData.id}</span>
+              <h1 className="text-3xl font-semibold">{pokemonData.name[0] + pokemonData.name.slice(1)}</h1>
+              <span className="text-gray-400 text-sm">#{currentPokemonID}</span>
             </div>
          </div>
 

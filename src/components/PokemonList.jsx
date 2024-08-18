@@ -57,7 +57,7 @@ function PokemonList({
   return (
     <section
       key={keyItem}
-      className="pokemon-list-container bg-white rounded-3xl h-56 max-h-68  flex flex-col items-center shadow-lg"
+      className="pokemon-list-container  rounded-3xl h-56 max-h-68  flex flex-col items-center shadow-md"
       onClick={() => handlePokemonPreview(pokemonData, pokemonPrevId, pokemonNextId)}
     >
       <img

@@ -6,8 +6,8 @@
 
 body {
   font-family: Arial, Helvetica, sans-serif;
-  background-color: hsl(190, 80%, 99%);
 }
+
 
 footer{
   transform: translateY(4rem)
@@ -27,8 +27,6 @@ summary{
   cursor: pointer;
 }
 
-
-
 .pokemon-list-container .pokemon-img {
   transition: all 200ms ease-in-out;
   /* filter: drop-shadow(35px -11px 4px rgba(0, 0, 0, 0.096)); */
@@ -41,6 +39,15 @@ summary{
 .pokemon-list-container:hover .pokemon-img {
   transform: scale(1.09);
   filter: drop-shadow(20px 6px 2px #203b241a);
+}
+
+.prev-container.active{
+  opacity: 0;
+  cursor: default;
+}
+
+.prev-container.active img{
+  display: none;
 }
 
 .fire {

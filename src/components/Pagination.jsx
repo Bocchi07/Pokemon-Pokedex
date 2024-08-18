@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import PokemonList from "./PokemonList.jsx";
 import { MdOutlineKeyboardDoubleArrowLeft } from "react-icons/md";
 import { MdKeyboardDoubleArrowRight } from "react-icons/md";
+import { MdKeyboardArrowDown } from "react-icons/md";
 
 function Pagination({
   prevBtn,
@@ -16,22 +17,20 @@ function Pagination({
   // console.log(currentPokemon);
   return (
     <div className="ml-[20%] w-[100%] h-[90%] rounded-md p-4 mt-20">
-      {/* <div className=" border-slate-600 border-solid  py-8 ">
-        <input
-          type="text"
-          placeholder="Enter a name or id"
-          id="search-pokemon"
-          value={searchPokemon}
-          onChange={handleSearch}
-          className="py-3 px-2 w-[70%] rounded-lg rounded-r-none"
-        />
-        <button
-          onClick={searchedPokemon}
-          className="bg-blue-500 py-3 px-2 text-center text-white rounded-r-md"
-        >
-          Search
-        </button>
-      </div> */}
+      <div className="flex justify-between align-center px-4 mb-8">
+        
+        <div className="text-sm font-semibold flex items-center cursor-pointer">
+          <h4>Ascending</h4> 
+          <MdKeyboardArrowDown className="text-md ml-2"/>
+        </div>
+
+        <div className="flex gap-x-4 align-center">
+          <h4 className="font-medium my-auto">from</h4>
+          <div className="py-2 px-4 w-20 rounded-md border-2 h-10 text-right">0</div>
+          <h4 className="my-auto">To</h4>
+          <div className="py-2 h-10 text-right px-4 w-20 border-2 rounded-md">20</div>
+        </div>
+      </div>
       <div className=" w-full grid grid-cols-3 gap-y-5 gap-x-4">
         {currentPokemon.map((c, index) => {
           return (

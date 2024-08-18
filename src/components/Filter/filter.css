@@ -1,0 +1,21 @@
+.details-wrapper{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 3rem;
+    font-size: .8rem;
+    width: 100%;
+    cursor: pointer;
+}
+
+/* .details-wrapper.active {
+
+} */
+
+.details-wrapper .show-more-icon{
+    transition: transform 200ms ease-in-out;
+}
+
+.details-wrapper.active .show-more-icon{
+    transform: rotate(180deg);
+}
