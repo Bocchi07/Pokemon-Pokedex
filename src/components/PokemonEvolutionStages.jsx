@@ -87,7 +87,7 @@ function PokemonEvolutionStages({handleEvolutionStagesPreview, evolutionStage, f
 
         <div className='flex justify-around items-center gap-x-8 pr-4 p-8'>
             <div className='w-[25%]'>
-                    {firstForm && 
+                    { firstForm && 
                         <div onClick={() => handleEvolutionStagesPreview(firstPokemon)} className="evolution-stages flex justify-center items-center bg-gray-100 p-8 rounded-full my-auto hover-bg-gray-300">
                             <img src={firstForm}/>
                         </div>
@@ -99,7 +99,7 @@ function PokemonEvolutionStages({handleEvolutionStagesPreview, evolutionStage, f
                             <p>{firstFormId}</p>
                             <div className='flex gap-x-2 justify-center'>
                                 {
-                                    evolutionStage.types.secondForm.map(t => {
+                                    evolutionStage.types.firstForm.map(t => {
                                         return <div className={`${t.type.name} bg-grass rounded-full  mt-2 text-sm py-1 px-4`}> {t.type.name}</div>
                                     })
                                 }

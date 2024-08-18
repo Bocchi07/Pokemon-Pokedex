@@ -102,15 +102,15 @@ function App() {
 
   const handlePokemonInput = (e) => {
     setSearchPokemon(e.target.value);
+   
   };
 
   const [searchError, setSearchError] = useState("");
 
-  const handleSearchedPokemon = async (e) => {
-
+  const handleSearchedPokemon = async () => {
     try {
       setLoading(true);
-      setSearchError(""); // Clear any previous error messages
+      setSearchError(""); 
       const response = await axios.get(
         `https://pokeapi.co/api/v2/pokemon/${searchPokemon.toLowerCase()}`
       );
@@ -156,12 +156,9 @@ function App() {
           };
         };
   
-        const pokemonData = getPokemonData();
-        setPreviewPokemon(pokemonData);
+        handleEvolutionStagesPreview(searchPokemon)
         setSearchPokemon("");
         setSwitchPage("PokemonPreview");
-  
-        // Fetch and handle evolution stages
         await getPokemonSpecies();
       }
     } catch (error) {
@@ -331,11 +328,13 @@ function App() {
 
       const { evolves_from_species, egg_groups, flavor_text_entries } = response.data;
 
+      console.log(flavor_text_entries)
       const getPokemonData = () => {
         return {
           evolves_from_species: evolves_from_species?.name || '',
           egg_groups,
           flavor_text_entries: flavor_text_entries[6] || {},
+          flavor_text_entries_alt : flavor_text_entries[0] || {}
         };
       };
 
@@ -429,6 +428,8 @@ function App() {
       const nextId = nextPokemonPreview ? nextPokemonPreview.id: prevId + 1;
       handlePokemonPreview(prevPokemonPreview, prevId - 1, nextId - 1);
     }
+
+    setEvolutionStage(null)
   };
 
   const switchNextPage = () => {
@@ -438,8 +439,9 @@ function App() {
       handlePokemonPreview(nextPokemonPreview, prevId + 1, nextId);
     }
 
-    console.log(nextPokemonPreview);
+    // console.log(nextPokemonPreview);
     setPrevEndPoint(false)
+    setEvolutionStage(null)
   };
 
   const backToPaginationPg = () => {

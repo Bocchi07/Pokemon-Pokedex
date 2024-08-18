@@ -13,7 +13,8 @@ function PokemonPreview({handleEvolutionStagesPreview, pokemonData, closePage, e
   let totalStats = 0;
 
   
-  const pokemonFacts = pokemonAddInfo ? pokemonAddInfo.flavor_text_entries.flavor_text : " ";
+  const pokemonFacts = pokemonAddInfo ? pokemonAddInfo.flavor_text_entries.flavor_text :  " ";
+  const secondPokemonFacts = pokemonAddInfo ? pokemonAddInfo.flavor_text_entries_alt.flavor_text :  " ";
   const pokemonEggGroups = pokemonAddInfo ? pokemonAddInfo.egg_groups.map(e => <option >{e.name}</option>) : null;
 
   const getPokemonWeight = pokemonData.weight / 10;
@@ -158,6 +159,7 @@ function PokemonPreview({handleEvolutionStagesPreview, pokemonData, closePage, e
                     <img className="w-4 mb-2 ml-1" src={Info} />
                 </div>
 
+                <p className="text-sm mb-4">{secondPokemonFacts}</p>
                 <p className="text-sm">{pokemonFacts}</p>
               </div>  
           </div> 
