@@ -1,6 +1,6 @@
 import React from 'react'
 
-function PokemonStats({statsName, statsNum, handleTotalStats}) {
+function PokemonStats({statsName, statsNum, handleTotalStats, itemKey}) {
   let statsPercent =  (statsNum / 252) * 100; 
   statsPercent = `${Math.ceil(statsPercent)}%`;
 
@@ -30,7 +30,7 @@ function PokemonStats({statsName, statsNum, handleTotalStats}) {
   // console.log(handleStatsName());
 
   return (
-    <div className='flex text-left gap-4 '>
+    <div className='flex text-left gap-4 ' key={itemKey}>
         <div className='max-w-[27%] w-[20%] mb-4 text-gray-600 text-nowrap'>
             <h4 className='font-semibold'>{handleStatsName()}:</h4>
         </div>

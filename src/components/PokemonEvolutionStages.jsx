@@ -99,8 +99,8 @@ function PokemonEvolutionStages({handleEvolutionStagesPreview, evolutionStage, f
                             <p>{firstFormId}</p>
                             <div className='flex gap-x-2 justify-center'>
                                 {
-                                    evolutionStage.types.firstForm.map(t => {
-                                        return <div className={`${t.type.name} bg-grass rounded-full  mt-2 text-sm py-1 px-4`}> {t.type.name}</div>
+                                    evolutionStage.types.firstForm.map((t, i) => {
+                                        return <div key={i} className={`${t.type.name} bg-grass rounded-full  mt-2 text-sm py-1 px-4`}> {t.type.name}</div>
                                     })
                                 }
                             </div>
@@ -129,8 +129,8 @@ function PokemonEvolutionStages({handleEvolutionStagesPreview, evolutionStage, f
 
                                     <div className='flex justify-center gap-x-2'>
                                     {
-                                        evolutionStage.types.firstForm.map(t => {
-                                            return <div className={`${t.type.name} bg-grass rounded-full  mt-2 text-sm py-1 px-4`}> {t.type.name}</div>
+                                        evolutionStage.types.firstForm.map((t, i) => {
+                                            return <div key={i} className={`${t.type.name} bg-grass rounded-full  mt-2 text-sm py-1 px-4`}> {t.type.name}</div>
                                         })
                                     }
                                     </div>
@@ -156,8 +156,8 @@ function PokemonEvolutionStages({handleEvolutionStagesPreview, evolutionStage, f
                           
                             <div className='flex gap-x-2 justify-center'>
                                 {
-                                    evolutionStage.types.thirdForm.map(t => {
-                                        return <div className={`${t.type.name} bg-grass rounded-full  mt-2 text-sm py-1 px-6`}> {t.type.name}</div>
+                                    evolutionStage.types.thirdForm.map((t, i) => {
+                                        return <div key={i} className={`${t.type.name} bg-grass rounded-full  mt-2 text-sm py-1 px-6`}> {t.type.name}</div>
                                     })
                                 }
                             </div>

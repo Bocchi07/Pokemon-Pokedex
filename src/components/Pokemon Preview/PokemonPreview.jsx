@@ -1,10 +1,11 @@
 import React, {useState} from "react";
-import "../App.css";
-import PokemonStats from "./PokemonStats.jsx"
-import PokemonEvolutionStages from "./PokemonEvolutionStages.jsx";
-import PokeballIcon from "../assets/Icons/Pokeball.png"
-import Info from "../assets/Icons/info.svg"
-import rightArrow from "../assets/Icons/right-arrow.svg";
+import "../../App.css";
+import PokemonStats from "../PokemonStats.jsx"
+import PokemonEvolutionStages from "../PokemonEvolutionStages.jsx";
+import PokeballIcon from "../../assets/Icons/Pokeball.png"
+import Info from "../../assets/Icons/info.svg"
+import rightArrow from "../../assets/Icons/right-arrow.svg";
+import "./preview.css";
 
 
 function PokemonPreview({handleEvolutionStagesPreview, pokemonData, closePage, evolutionStage, pokemonAddInfo, previewPokemon, prevPokemon, nextPokemon, loading, switchNextPage, switchPrevPage, prevEndPoint, prevSetEndPoint }) {
@@ -15,7 +16,7 @@ function PokemonPreview({handleEvolutionStagesPreview, pokemonData, closePage, e
   
   const pokemonFacts = pokemonAddInfo ? pokemonAddInfo.flavor_text_entries.flavor_text :  " ";
   const secondPokemonFacts = pokemonAddInfo ? pokemonAddInfo.flavor_text_entries_alt.flavor_text :  " ";
-  const pokemonEggGroups = pokemonAddInfo ? pokemonAddInfo.egg_groups.map(e => <option >{e.name}</option>) : null;
+  const pokemonEggGroups = pokemonAddInfo ? pokemonAddInfo.egg_groups.map((e, i) => <option key={i} >{e.name}</option>) : null;
 
   const getPokemonWeight = pokemonData.weight / 10;
   const getPokemonHeight = pokemonData.height * 10
@@ -116,8 +117,8 @@ function PokemonPreview({handleEvolutionStagesPreview, pokemonData, closePage, e
           <img className="w-7 text-right mb-auto mr-2 cursor-pointer rotate-180" src={rightArrow} alt="" onClick={switchPrevPage} disabled={!prevPokemon}/>
 
               <div className="opacity-70">
-                  <h2 className="font-semibold text-lg">{prevPokemonFix() && prevPokemonFix().name}</h2>
-                 <span className ="span-id text-sm text-gray-600 font-semibold">{prevPokemonFix() && prevPokemonFix().id }</span>
+                  <h2 className="font-semibold text-sm">{prevPokemonFix() && prevPokemonFix().name}</h2>
+                 <span className ="span-id text-xs text-gray-600 font-semibold">{prevPokemonFix() && prevPokemonFix().id }</span>
               </div>
             
         </div>    
@@ -126,28 +127,27 @@ function PokemonPreview({handleEvolutionStagesPreview, pokemonData, closePage, e
             <div className="flex items-center gap-x-3 mb-2 ">
               <img src={PokeballIcon} className="w-5" />
               <h1 className="text-3xl font-semibold">{pokemonData.name[0] + pokemonData.name.slice(1)}</h1>
-              <span className="text-gray-400 text-sm">#{currentPokemonID}</span>
+              <span className="text-gray-400 text-xs">#{currentPokemonID}</span>
             </div>
          </div>
 
 
         <div className="next-container text-right flex">
           <div className="opacity-70">
-            <h2 className="font-semibold text-lg">{nextPokemonFix() && nextPokemonFix().name}</h2>
-            <span className = "span-id text-sm text-gray-600 font-semibold">{nextPokemonFix() && nextPokemonFix().id}</span>
+            <h2 className="font-semibold text-sm">{nextPokemonFix() && nextPokemonFix().name}</h2>
+            <span className = "text-xs span-id  text-gray-600 font-semibold">{nextPokemonFix() && nextPokemonFix().id}</span>
           </div>
 
           <img className="w-7 text-right mb-auto ml-2 cursor-pointer" src={rightArrow} alt="" onClick={switchNextPage} disabled={!nextPokemon}/>
         </div>  
       </div>
 
-      <div className="flex w-full gap-3">
-  
-        <div className="relative w-[40%] h-96 p-2 block content-center text-center rounded-md"> 
+      <div className="pokemon-container w-full gap-3">
+        <div className="pokemon-image-container relative h-80 p-2 block content-center text-center rounded-3xl"> 
             <img
               src={pokemonData.sprite || previewPokemon.sprites}
               alt="image_not_found"
-              className={` bg-${pokemonType} max-w-[90%] flex items-end justify-center rounded-md mx-auto ${loading ? "loading" : " "}`}
+              className={` bg-${pokemonType} h-full flex items-end justify-center rounded-md mx-auto ${loading ? "loading" : " "}`}
             />
         </div>
 
@@ -179,7 +179,7 @@ function PokemonPreview({handleEvolutionStagesPreview, pokemonData, closePage, e
                 <h4 className="text-lg mb-2 font-semibold">Abilities</h4>
                 <select name="" id="" className="w-28 text-sm px-2 py-1 rounded-md bg-gray-200 ">
                   {
-                    pokemonData.abilities.map(a => <option >{a}</option>)
+                    pokemonData.abilities.map((a, i) => <option key={i}>{a}</option>)
                   }
                 </select>
               </div>
@@ -196,8 +196,8 @@ function PokemonPreview({handleEvolutionStagesPreview, pokemonData, closePage, e
             <h4 className="mb-2 font-semibold text-lg">Type</h4>
             <div className="flex gap-x-2 z-10">
               {
-                pokemonData.types.map(b => {
-                return <div className={`${b} rounded-2xl text-sm py-1 px-6`}> {b} </div>
+                pokemonData.types.map((b, i) => {
+                return <div key={i} className={`${b} rounded-2xl text-sm py-1 px-6`}> {b} </div>
                 })
               }
             </div>
@@ -213,8 +213,8 @@ function PokemonPreview({handleEvolutionStagesPreview, pokemonData, closePage, e
           <div className="ml-4 h-80 flex-1">
             <h4 className="text-center text-2xl font-semibold mb-8">Statistic</h4>
              {
-              pokemonData.stats.map(s => {
-                return <PokemonStats statsName={s.statName} statsNum = {s.statNum} handleTotalStats={handleTotalStats}/>
+              pokemonData.stats.map((s, i) => {
+                return <PokemonStats key={i} statsName={s.statName} statsNum = {s.statNum} handleTotalStats={handleTotalStats}/>
               })
              } 
 
@@ -243,6 +243,7 @@ function PokemonPreview({handleEvolutionStagesPreview, pokemonData, closePage, e
             secondForm={getPokemonSecondForm} 
             lastForm={getPokemonLastForm}
             handleEvolutionStagesPreview={handleEvolutionStagesPreview}
+            itemKey = {pokemonData.id}
             />
 
         </div>

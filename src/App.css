@@ -92,11 +92,11 @@ summary{
   background-color: #f7de3f;
 }
 
-.flying {
+.flying{
   background: linear-gradient(180deg, #3dc7ef 50%, #bdb9b8 50%);
 }
 
-.bug {
+.bug{
   background-color: #a8b820;
   color: white;
 }

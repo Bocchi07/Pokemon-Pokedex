@@ -2,7 +2,6 @@ import React from "react";
 import "../App.css";
 
 function PokemonList({
-  keyItem,
   pokemonSprite,
   pokemonId,
   pokemonName,
@@ -13,7 +12,7 @@ function PokemonList({
   stats,
   abilities,
 }) {
-  const mapTesting = pokemonTypes.map((t) => t);
+ 
   let pokemonFixID;
   let pokemonPrevId = pokemonId >= 1 ? pokemonId - 1 : 1;
   let pokemonNextId = pokemonId + 1 ;
@@ -56,7 +55,6 @@ function PokemonList({
 
   return (
     <section
-      key={keyItem}
       className="pokemon-list-container  rounded-3xl h-56 max-h-68  flex flex-col items-center shadow-md"
       onClick={() => handlePokemonPreview(pokemonData, pokemonPrevId, pokemonNextId)}
     >
@@ -69,10 +67,10 @@ function PokemonList({
       <p className="text-sm mt-1">{pokemonFixID}</p>
 
       <div className="flex gap-x-3">
-        {pokemonTypes.map((b, i) => {
+        {pokemonTypes.map((b, index) => {
           return (
             <div
-              key={i}
+              key={index}
               className={` text-sm text-center mt-2 px-5 py-1 rounded-2xl ${b}`}
             >
               {b}

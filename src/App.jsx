@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import "./App.css";
 import Pagination from "./components/Pagination.jsx";
 import axios from "axios";
-import PokemonPreview from "./components/PokemonPreview.jsx";
+import PokemonPreview from "./components/Pokemon Preview/PokemonPreview.jsx";
 import LoadingImg from "./assets/Images/loading-images.gif";
 import Header from "./components/Header.jsx";
 import FilteringSection from "./components/Filter/FilteringSection.jsx"
