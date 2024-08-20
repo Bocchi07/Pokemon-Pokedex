@@ -12,10 +12,130 @@
 
 } */
 
-.details-wrapper .show-more-icon{
+.filter-container{
+    transform: translateX(-16rem);
+    opacity: 0;
+    transition: all 200ms ease;
+}
+
+.filter-container.active{
+    transform: translateX(0rem);
+    opacity: 1;
+}
+
+.filter-name-page.active{
+    display: none;
+    opacity: 0;
+}
+
+.filter-name-page{
+    border: 1px solid rgb(194, 189, 189);
+    padding: 2px 4px;
+    opacity: 1;
+    transition: all 400ms ease;
+  
+}
+
+.filter-name-page:hover{
+   background-color: rgba(219, 219, 219, 0.315);
+}
+
+.search-filter-container::after{
+    content: "";
+    position: absolute;
+    top: 1rem;
+    height: .4rem;
+    width: 100%;
+    border: 1px solid black;
+    background-color: red;
+}
+
+.details-wrapper .show-more-icon,
+.show-more-icon{
     transition: transform 200ms ease-in-out;
 }
 
 .details-wrapper.active .show-more-icon{
     transform: rotate(180deg);
 }
+
+.moves-generation-wrapper.active .show-more-icon{
+    transform: rotate(180deg);
+}
+
+.moves-typea-wrapper.active .show-more-icon{
+    transform: rotate(180deg);
+}
+
+.Types-content.active{
+   margin-bottom: 39.2rem;
+   align-items:start; 
+   border-bottom: none;
+   transform: translateY(1.1em); 
+}
+
+.Generations-content.active{
+    margin-bottom: 17.2rem;
+    align-items:start; 
+    border-bottom: none;
+    transform: translateY(1.1em); 
+ }
+
+ .Regions-content.active{
+    margin-bottom: 19.2rem;
+    align-items:start; 
+    border-bottom: none;
+    transform: translateY(1.1em); 
+ }
+
+ .Moves-content.active{
+    border: none;
+ }
+
+.move-generation-list{
+    border: none;
+ }
+
+.filtering-pokemon .Types-content.active ~ .type-list{
+    transition: all 200ms ease;
+    height: fit-content;
+    opacity: 1;
+}
+
+.type-list {
+   transform: translateY(-24.4rem);
+   transition: all 100ms ease;
+   cursor: pointer;
+   font-weight: 500;
+   font-family: Helvetica, sans-serif;
+   transition: all 200ms ease;
+   height: fit-content;
+}
+
+.generations-list{
+    transform: translateY(-24rem);
+    transition: all 100ms ease;
+    cursor: pointer;
+    font-weight: 500;
+    font-family: Helvetica, sans-serif;
+    transition: all 200ms ease;
+    height: fit-content;
+}
+
+.regions-list{
+    transform: translateY(-23rem);
+    transition: all 100ms ease;
+    cursor: pointer;
+    font-weight: 500;
+    font-family: Helvetica, sans-serif;
+    height: fit-content;
+}
+
+
+
+.type-list:hover,
+.generations-list:hover,
+.regions-list:hover{
+    color: rgb(8, 86, 255);
+ }
+ 

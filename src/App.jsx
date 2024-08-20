@@ -21,7 +21,8 @@ function App() {
   const [pokemonAddInfo, setPokemonAddInfo] = useState();
   const [nextPokemonPreview, setNextPokemonPreview] = useState();
   const [prevPokemonPreview, setPrevPokemonPreview] = useState();
-  const [prevEndPoint, setPrevEndPoint] = useState(false)
+  const [prevEndPoint, setPrevEndPoint] = useState(false);
+  const [filterIsActive, setFilterIsActive] = useState(false);
 
   let pokemonName;
 
@@ -454,6 +455,10 @@ function App() {
     setPrevPokemonPreview(null)
   };
 
+  const handleFilterIsActive = () => {
+    setFilterIsActive(filterIsActive !== true ? true : false) 
+  }
+
   const loadingPage = (
     <div className="loading-message-container flex flex-col items-center justify-center h-[90vh]"> 
       <img src={LoadingImg} alt="" className="w-[20%] mb-4"/>
@@ -479,6 +484,9 @@ function App() {
           searchPokemon={searchPokemon}
           handleSearch={handlePokemonInput}
           searchedPokemon={handleSearchedPokemon}
+          setFilterIsActive = {setFilterIsActive}
+          filterIsActive = {filterIsActive}
+          handleFilterIsActive = {handleFilterIsActive}
         />
         <Pagination
           prevBtn={prevPokemon}
@@ -489,6 +497,9 @@ function App() {
           currentPokemon={currentPokemon}
           handlePokemonPreview={handlePokemonPreview}
           page ={page}
+          setFilterIsActive = {setFilterIsActive}
+          filterIsActive = {filterIsActive}
+          handleFilterIsActive = {handleFilterIsActive}
         />
       </div>
     );
