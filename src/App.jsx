@@ -264,7 +264,7 @@ function App() {
     //   setPrevEndPoint(true)
     // } 
 
-    console.log(previewPokemon)
+    console.log(pokemonData)
     setLoading(false);
   };
 
@@ -487,6 +487,10 @@ function App() {
           setFilterIsActive = {setFilterIsActive}
           filterIsActive = {filterIsActive}
           handleFilterIsActive = {handleFilterIsActive}
+          setCurrentPokemon = {setCurrentPokemon}
+          handleEvolutionStagesPreview = {handleEvolutionStagesPreview}
+          setLoading = {setLoading}
+          setPage = {setPage}
         />
         <Pagination
           prevBtn={prevPokemon}

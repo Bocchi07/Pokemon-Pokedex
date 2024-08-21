@@ -23,6 +23,32 @@ summary{
   list-style: none;
 }
 
+@media (min-width: 860px) {
+  .filter-container.active{
+    position: fixed;
+    bottom: 0;
+    top: 0;
+    left: 0;
+    width: 17rem;
+  }
+
+  .search-filter-container div:first-child {
+      display: flex;
+      flex-direction: row-reverse;
+      align-items: center;
+    }
+
+  .search-field-container{
+      flex: 1;
+  }
+
+  .filter-name-page{
+      width: 10rem;
+      margin-block: auto;
+      transform: translateY(-.3rem);
+  }
+}
+
 .pokemon-list-container {
   cursor: pointer;
 }

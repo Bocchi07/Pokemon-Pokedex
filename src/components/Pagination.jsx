@@ -5,6 +5,7 @@ import { MdKeyboardDoubleArrowRight } from "react-icons/md";
 import { MdKeyboardArrowDown } from "react-icons/md";
 import Pokeball from "../assets/Icons/Pokeball.png"
 import filterIcon from "../assets/Icons/filterIcon.png"
+import "../App.css"
 
 function Pagination({
   prevBtn,
@@ -16,19 +17,15 @@ function Pagination({
   handlePokemonPreview,
   page,
   filterIsActive,
-  handleFilterIsActive
+  handleFilterIsActive,
+  setFilterIsActive
 }) {
   // console.log(currentPokemon);
   return (
-    <div className={`w-[100%] h-[90%] rounded-md p-4 mt-20 ${filterIsActive && 'ml-[20%]'}`}>
+    <div className={`w-[100%] h-[90%] rounded-md p-4 mt-20 ${filterIsActive && 'ml-[20%]'}`} >
       <div className="search-filter-container">
-        <div className="flex items-center gap-x-3 px-4 mb-8 ">  
-          <div className={` filter-name-page h-11 flex items-center justify-center rounded-full cursor-pointer w-32 ${filterIsActive && 'active'}`} onClick={handleFilterIsActive}>
-            <img src={filterIcon} className="w-5 mr-2 my-auto"/>
-            <h5 className='font-semibold text-base'>Filter</h5>
-          </div>
-
-          <div className='relative flex-1'>
+        <div className="w-full gap-y-2 items-center gap-x-3 px-4 mb-8 ">  
+          <div className='search-field-container relative w-full'>
             <form action="" onSubmit={searchedPokemon} className=" w-full">
               <input 
                 type="text" 
@@ -40,6 +37,11 @@ function Pagination({
               />
             </form>
             <img src={Pokeball} alt="" className='w-8 absolute top-2 right-1'/>
+          </div>
+
+          <div className={`bg-slate-100 filter-name-page h-11 flex items-center justify-center rounded-full cursor-pointer mt-2 ${filterIsActive && 'active'}`} onClick={handleFilterIsActive}>
+            <img src={filterIcon} className="w-5 mr-2 my-auto"/>
+            <h5 className='font-semibold text-base'>Filter</h5>
           </div>
       </div>
       
@@ -62,6 +64,8 @@ function Pagination({
           );
         })}
       </div>
+
+      
 
   
       <div className="mx-auto mt-10 shadow-md bg-white rounded-md py-2 px-4 w-40 flex justify-center align-center">
