@@ -6,9 +6,12 @@ import PokemonPreview from "./components/Pokemon Preview/PokemonPreview.jsx";
 import LoadingImg from "./assets/Images/loading-images.gif";
 import Header from "./components/Header.jsx";
 import FilteringSection from "./components/Filter/FilteringSection.jsx"
+import Item from "./components/Items/Item.jsx"
 
 function App() {
   const [page, setPage] = useState(1);
+  const [filterPage, setFilterPage] = useState(1);
+  const [activePage, setActivePage] = useState(true)
   const [currentPokemon, setCurrentPokemon] = useState([]);
   const [searchPokemon, setSearchPokemon] = useState("");
   const [pokemonSearchUrl, setPokemonSearchUrl] = useState("");
@@ -89,16 +92,27 @@ function App() {
       setLoading(false);
       addFadeOut();
     };
-  }, [page]);
+  }, [ filterPage]);
 
   const prevPokemon = () => {
-    setPage((p) => (p > 1 ? p - 1 : 1));
+    if (activePage !== true){
+      setFilterPage((p) => (p > 1 ? p - 1 : 1))
+    } else {
+       setPage((p) => (p > 1 ? p - 1 : 1));
+    }
+
     scrollToTop();
   };
 
   const nextPokemon = () => {
-    setPage((p) => p + 1);
+    if (activePage !== true){
+      setFilterPage((p) => p + 1)
+    } else{
+      setPage((p) => p + 1);
+    }
+
     scrollToTop();
+    console.log(filterPage)
   };
 
   const handlePokemonInput = (e) => {
@@ -264,7 +278,7 @@ function App() {
     //   setPrevEndPoint(true)
     // } 
 
-    console.log(pokemonData)
+    // console.log(pokemonData)
     setLoading(false);
   };
 
@@ -456,8 +470,11 @@ function App() {
   };
 
   const handleFilterIsActive = () => {
-    setFilterIsActive(filterIsActive !== true ? true : false) 
+    setFilterIsActive(filterIsActive !== true ? true : false)
+
   }
+
+ console.log(filterIsActive)
 
   const loadingPage = (
     <div className="loading-message-container flex flex-col items-center justify-center h-[90vh]"> 
@@ -465,6 +482,7 @@ function App() {
       <h5 className="text-xl font-bold loading-message">Loading <span>...</span></h5>
     </div>
   );
+
 
   let content;
 
@@ -491,6 +509,9 @@ function App() {
           handleEvolutionStagesPreview = {handleEvolutionStagesPreview}
           setLoading = {setLoading}
           setPage = {setPage}
+          setFilterPage = {setFilterPage}
+          filterPage = {filterPage}
+          setActivePage = {setActivePage}
         />
         <Pagination
           prevBtn={prevPokemon}
@@ -504,6 +525,8 @@ function App() {
           setFilterIsActive = {setFilterIsActive}
           filterIsActive = {filterIsActive}
           handleFilterIsActive = {handleFilterIsActive}
+          activePage = {activePage}
+          filterPage = {filterPage}
         />
       </div>
     );

@@ -44,10 +44,14 @@ summary{
 
   .filter-name-page{
       width: 10rem;
-      margin-block: auto;
       transform: translateY(-.3rem);
   }
 }
+
+
+.filter-container{
+   transition: all 300ms ease;
+  }
 
 .pokemon-list-container {
   cursor: pointer;

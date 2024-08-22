@@ -18,11 +18,13 @@ function Pagination({
   page,
   filterIsActive,
   handleFilterIsActive,
-  setFilterIsActive
+  setFilterIsActive,
+  activePage,
+  filterPage
 }) {
   // console.log(currentPokemon);
   return (
-    <div className={`w-[100%] h-[90%] rounded-md p-4 mt-20 ${filterIsActive && 'ml-[20%]'}`} >
+    <div className={`pagination-container w-full ml-[0%] h-[90%] rounded-md p-4 mt-20 ${filterIsActive && 'ml-[23%]' }`} >
       <div className="search-filter-container">
         <div className="w-full gap-y-2 items-center gap-x-3 px-4 mb-8 ">  
           <div className='search-field-container relative w-full'>
@@ -39,7 +41,7 @@ function Pagination({
             <img src={Pokeball} alt="" className='w-8 absolute top-2 right-1'/>
           </div>
 
-          <div className={`bg-slate-100 filter-name-page h-11 flex items-center justify-center rounded-full cursor-pointer mt-2 ${filterIsActive && 'active'}`} onClick={handleFilterIsActive}>
+          <div onClick={handleFilterIsActive} className={`bg-slate-50 filter-name-page h-11 flex items-center justify-center rounded-full cursor-pointer mt-2 ${filterIsActive && 'active'}`} >
             <img src={filterIcon} className="w-5 mr-2 my-auto"/>
             <h5 className='font-semibold text-base'>Filter</h5>
           </div>
@@ -67,16 +69,20 @@ function Pagination({
 
       
 
-  
-      <div className="mx-auto mt-10 shadow-md bg-white rounded-md py-2 px-4 w-40 flex justify-center align-center">
-          <button onClick={prevBtn} type="button" className="w-[20%]" >
-             <MdOutlineKeyboardDoubleArrowLeft />
-          </button>
-          <h2 className="flex-1">{page}</h2>
-          <button onClick={nextBtn} type="button" className="w-[20%]" >
-             <MdKeyboardDoubleArrowRight  />
-          </button>
-      </div>
+  {
+    activePage === true ?    <div className="mx-auto mt-10 shadow-md bg-white rounded-md py-2 px-4 w-40 flex justify-center align-center">
+                                  <button onClick={prevBtn} type="button" className="w-[20%] cursor-pointer" >
+                                     <MdOutlineKeyboardDoubleArrowLeft />
+                                  </button>
+                                  <h2 className="flex-1">{page}</h2>
+                                  <button onClick={nextBtn} type="button" className="w-[20%]" >
+                                     <MdKeyboardDoubleArrowRight  />
+                                  </button>
+                              </div>
+
+                        : " "
+  }
+
   
     </div>
   );

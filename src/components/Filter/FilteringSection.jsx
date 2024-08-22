@@ -12,7 +12,7 @@ import movesIcon from "../../assets/Icons/movesIcon.png"
 import filterIcon from "../../assets/Icons/filterIcon.png"
 import { LuArrowLeftToLine } from "react-icons/lu";
 
-function FilteringSection({setLoading, searchPokemon, handleSearch, searchedPokemon, setFilterIsActive, filterIsActive, handleFilterIsActive, setCurrentPokemon, handleEvolutionStagesPreview, setPage}) {
+function FilteringSection({setLoading, searchPokemon, handleSearch, searchedPokemon, setFilterIsActive, filterIsActive, handleFilterIsActive, setCurrentPokemon, handleEvolutionStagesPreview, setPage, setFilterPage, filterPage, setActivePage}) {
   const [page, setPages] = useState(1);
   // const [loading, setLoading] = useState(false);
   const [activeIndex, setActiveIndex] = useState();
@@ -31,22 +31,29 @@ function FilteringSection({setLoading, searchPokemon, handleSearch, searchedPoke
     item === activeMovesSection ?  setActiveMovesSection(null) :  setActiveMovesSection(item);
   }
 
+
+
   const handleTypePokemon = async (type) => {
-    setLoading(true)
-    setPage(1)
-    setPokemonTypesActive(type)
-  
+      setLoading(true)
+      setActivePage(false)
+      setPokemonTypesActive(type)
+      console.log(filterPage)
+
       try{
-        const offset = (page - 1) * 20;
+        // const offset = (page - 1) * 20;
         const response = await axios.get(`https://pokeapi.co/api/v2/type/${type}`);
         const url = response.data.pokemon
-            .slice(offset, offset + 21)
+            // .slice(offset, offset + 21)
             .map(p => p.pokemon.url)
 
-        const pokemonDetailsPromises = url.map(res => axios.get(res));
-        const pokemonDetailsResponses = await Promise.all(pokemonDetailsPromises)
+        const pokemonUrlPromises = url.map(res => axios.get(res));
+        const pokemonUrlResponses = await Promise.all(pokemonUrlPromises)
+        const pokemonID = pokemonUrlResponses.map(id => id.data.id)
 
-        const pokemonData = pokemonDetailsResponses.map((res) => {
+        const pokemonIdPromises = pokemonID.map(res => axios.get(`https://pokeapi.co/api/v2/pokemon/${res}`))
+        const pokemonIdResponses = await Promise.all(pokemonIdPromises);
+
+        const pokemonData = pokemonIdResponses.map((res) => {
           const { id, name, types, sprites, height, weight, stats, abilities } = res.data;
           return {
             id,
@@ -65,55 +72,67 @@ function FilteringSection({setLoading, searchPokemon, handleSearch, searchedPoke
 
         setCurrentPokemon(pokemonData)
         // handleEvolutionStagesPreview(type)
-        console.log(pokemonData);
+        console.log(pokemonIdResponses);
       }catch(error){
         console.error(error)
       } finally{
         setLoading(false)
-        // setPages(p => p + 1)
+        handleFilterIsActive()
+        setPage(1)
       }
   }
 
-  const handleGenerationPokemon = async (data) => {
-    setLoading(true)
+    const handleGenerationPokemon = async (data) => {
+        setLoading(true)
+        setActivePage(false)
 
-    try{
-      const offset = (page - 1) * 20;
-      const response = await axios.get(`https://pokeapi.co/api/v2/generation/${data}`)
-      const url = response.data.pokemon_species
-        .slice(offset, offset + 21)
-        .map(p => p.name);
 
-      setPokemonName(url)
+        try{
+          // const offset = (page - 1) * 20;
+          const response = await axios.get(`https://pokeapi.co/api/v2/generation/${data}`)
+          const url = response.data.pokemon_species
+            // .slice(offset, offset + 21)
+            .map(p => p.url);
 
-      const pokemonDetailsPromises = url.map(res => axios.get(`https://pokeapi.co/api/v2/pokemon/${res}`))
-      const pokemonDetailsResponses = await Promise.all(pokemonDetailsPromises);
+            //p.name == "deoxys" ? 'deoxys-normal' : p.name
 
-      const pokemonData = pokemonDetailsResponses.map((res) => {
-      const { id, name, types, sprites, height, weight, stats, abilities } = res.data;
-        return {
-          id,
-          name: name[0].toUpperCase() + name.slice(1),
-          types: types.map((info) => info.type.name),
-          sprites: sprites.other["official-artwork"].front_default,
-          height,
-          weight,
-          stats: stats.map((s) => ({
+           const pokemonUrlPromises = url.map(res => axios.get(res))
+           const pokemonUrlResponses = await Promise.all(pokemonUrlPromises);
+
+           const pokemonID = pokemonUrlResponses.map(d => d.data.id)
+           const pokemonIdPromises = pokemonID.map(res => axios.get(`https://pokeapi.co/api/v2/pokemon/${res}`))
+           const pokemonIdResponses = await Promise.all(pokemonIdPromises);
+
+         // console.log(url);
+
+          const pokemonData = pokemonIdResponses.map((res) => {
+          const { id, name, types, sprites, height, weight, stats, abilities } = res.data;
+          return {
+            id,
+            name: name[0].toUpperCase() + name.slice(1),
+            types: types.map((info) => info.type.name),
+            sprites: sprites.other["official-artwork"].front_default,
+            height,
+            weight,
+            stats: stats.map((s) => ({
               statNum: s.base_stat,
               statName: s.stat.name,
-          })),
-          abilities: abilities.map((a) => a.ability.name),
+            })),
+            abilities: abilities.map((a) => a.ability.name),
           };
         });
 
-      setCurrentPokemon(pokemonData)
-      console.log(pokemonDetailsResponses);
-    }catch(error){
-      console.error(error)
-    }finally{
-      setLoading(false)
-    }
-  }
+          setCurrentPokemon(pokemonData)
+          console.log(pokemonIdResponses)
+        }catch(error){
+          console.error("can't fetch: ",  error)
+        }finally{
+          setLoading(false)
+          handleFilterIsActive()
+          setPage(1)
+        }
+      }
+
 
   const filterContent = ["Types", "Generations", "Regions", "Moves"];
   const renderTypesActive = activeIndex == 0 && pokemonTypesArr.map((t, i) => <ul key={i} className='z-30 opacity-0 type-list flex flex-col items-left text-left'><li className="type-list rounded-md text-xs py-2" onClick={() => handleTypePokemon(t)}>{t[0].toUpperCase() + t.slice(1)}</li ></ul>);
@@ -217,8 +236,8 @@ function FilteringSection({setLoading, searchPokemon, handleSearch, searchedPoke
          </div>
 
           <div>
-            <IoClose className="close-filter-icon my-auto text-sm  rounded-full h-6 w-6 p-1" onClick={handleFilterIsActive}/>
-            <LuArrowLeftToLine className="arrow-close-icon h-6 w-6 p-1 rounded-full" onClick={handleFilterIsActive}/>
+            <IoClose className="close-filter-icon my-auto text-sm  rounded-full h-6 w-6 p-1 cursor-pointer" onClick={handleFilterIsActive}/>
+            <LuArrowLeftToLine className="arrow-close-icon h-6 w-6 p-1 rounded-full cursor-pointer" onClick={handleFilterIsActive}/>
           </div>
       </div>
 
