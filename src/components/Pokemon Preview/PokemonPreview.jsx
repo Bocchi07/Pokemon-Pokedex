@@ -16,6 +16,7 @@ function PokemonPreview({handleEvolutionStagesPreview, pokemonData, closePage, e
   
   const pokemonFacts = pokemonAddInfo ? pokemonAddInfo.flavor_text_entries.flavor_text :  " ";
   const secondPokemonFacts = pokemonAddInfo ? pokemonAddInfo.flavor_text_entries_alt.flavor_text :  " ";
+  const thirdPokemonFacts = pokemonAddInfo ? pokemonAddInfo.flavor_text_mega :  " ";
   const pokemonEggGroups = pokemonAddInfo ? pokemonAddInfo.egg_groups.map((e, i) => <option key={i} >{e.name}</option>) : null;
 
   const getPokemonWeight = pokemonData.weight / 10;
@@ -72,6 +73,8 @@ function PokemonPreview({handleEvolutionStagesPreview, pokemonData, closePage, e
     }
   };
 
+  console.log(pokemonAddInfo)
+
   let nextPokemonFix = () => {
     if (nextPokemon){
       const firstLetterOfName = nextPokemon && nextPokemon.name[0].toUpperCase();
@@ -118,7 +121,7 @@ function PokemonPreview({handleEvolutionStagesPreview, pokemonData, closePage, e
 
               <div className="opacity-70">
                   <h2 className="font-semibold text-sm">{prevPokemonFix() && prevPokemonFix().name}</h2>
-                 <span className ="span-id text-xs text-gray-600 font-semibold">{prevPokemonFix() && prevPokemonFix().id }</span>
+                 <span className ="span-id text-xs text-gray-600 font-semibold">#{String(prevPokemon.id).padStart(4, "0") }</span>
               </div>
             
         </div>    
@@ -127,7 +130,8 @@ function PokemonPreview({handleEvolutionStagesPreview, pokemonData, closePage, e
             <div className="flex items-center gap-x-3 mb-2 ">
               <img src={PokeballIcon} className="w-5" />
               <h1 className="text-3xl font-semibold">{pokemonData.name[0] + pokemonData.name.slice(1)}</h1>
-              <span className="text-gray-400 text-xs">#{currentPokemonID}</span>
+              <span className="text-gray-400 text-xs">#{String(pokemonData.id).padStart(4, "0")
+}</span>
             </div>
          </div>
 
@@ -135,7 +139,7 @@ function PokemonPreview({handleEvolutionStagesPreview, pokemonData, closePage, e
         <div className="next-container text-right flex">
           <div className="opacity-70">
             <h2 className="font-semibold text-sm">{nextPokemonFix() && nextPokemonFix().name}</h2>
-            <span className = "text-xs span-id  text-gray-600 font-semibold">{nextPokemonFix() && nextPokemonFix().id}</span>
+            <span className = "text-xs span-id  text-gray-600 font-semibold">#{String(nextPokemon.id).padStart(4, "0")}</span>
           </div>
 
           <img className="w-7 text-right mb-auto ml-2 cursor-pointer" src={rightArrow} alt="" onClick={switchNextPage} disabled={!nextPokemon}/>
@@ -159,8 +163,19 @@ function PokemonPreview({handleEvolutionStagesPreview, pokemonData, closePage, e
                     <img className="w-4 mb-2 ml-1" src={Info} />
                 </div>
 
-                <p className="text-sm mb-4">{secondPokemonFacts}</p>
-                <p className="text-sm">{pokemonFacts}</p>
+                {
+                  thirdPokemonFacts && <p className="text-sm mb-4">{thirdPokemonFacts}</p>
+                }
+                {
+                  secondPokemonFacts && <p className="text-sm mb-4">{secondPokemonFacts}</p>
+                }
+
+                {
+                  pokemonFacts && <p className="text-sm ">{pokemonFacts}</p>
+                }
+
+
+
               </div>  
           </div> 
    

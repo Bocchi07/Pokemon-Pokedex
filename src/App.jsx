@@ -7,6 +7,7 @@ import LoadingImg from "./assets/Images/loading-images.gif";
 import Header from "./components/Header.jsx";
 import FilteringSection from "./components/Filter/FilteringSection.jsx"
 import Item from "./components/Items/Item.jsx"
+import MegaEvolution from "./components/MegaEvolution.jsx"
 
 function App() {
   const [page, setPage] = useState(1);
@@ -92,7 +93,7 @@ function App() {
       setLoading(false);
       addFadeOut();
     };
-  }, [ filterPage]);
+  }, [ page]);
 
   const prevPokemon = () => {
     if (activePage !== true){
@@ -343,15 +344,17 @@ function App() {
 
       const { evolves_from_species, egg_groups, flavor_text_entries } = response.data;
 
-      console.log(flavor_text_entries)
       const getPokemonData = () => {
         return {
           evolves_from_species: evolves_from_species?.name || '',
           egg_groups,
           flavor_text_entries: flavor_text_entries[6] || {},
-          flavor_text_entries_alt : flavor_text_entries[0] || {}
+          flavor_text_entries_alt : flavor_text_entries[3] || {},
+          flavor_text_mega: response.data.flavor_text_entries[0].flavor_text
         };
       };
+
+      console.log(getPokemonData())
 
       const getPokemonEvolutionStages = async () => {
         let evolutionStagesData = {
@@ -474,7 +477,7 @@ function App() {
 
   }
 
- console.log(filterIsActive)
+ // console.log(filterIsActive)
 
   const loadingPage = (
     <div className="loading-message-container flex flex-col items-center justify-center h-[90vh]"> 
@@ -498,7 +501,7 @@ function App() {
   } else if (switchPage === "Pagination") {
     content = (
       <div className="flex gap-x-4 ">
-        <FilteringSection 
+        <FilteringSection
           searchPokemon={searchPokemon}
           handleSearch={handlePokemonInput}
           searchedPokemon={handleSearchedPokemon}
@@ -553,6 +556,7 @@ function App() {
   return(
   <>
     <Header /> 
+    {/*<MegaEvolution />*/}
     {loading ? loadingPage : content}
   </>)
 }

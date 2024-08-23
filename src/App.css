@@ -2,6 +2,7 @@
   max-width: 1280px;
   margin: 0 auto;
   text-align: center;
+  padding: 0 2rem;
 }
 
 body {
@@ -47,11 +48,6 @@ summary{
       transform: translateY(-.3rem);
   }
 }
-
-
-.filter-container{
-   transition: all 300ms ease;
-  }
 
 .pokemon-list-container {
   cursor: pointer;

@@ -72,7 +72,7 @@ function FilteringSection({setLoading, searchPokemon, handleSearch, searchedPoke
 
         setCurrentPokemon(pokemonData)
         // handleEvolutionStagesPreview(type)
-        console.log(pokemonIdResponses);
+        // console.log(pokemonIdResponses);
       }catch(error){
         console.error(error)
       } finally{
@@ -228,7 +228,7 @@ function FilteringSection({setLoading, searchPokemon, handleSearch, searchedPoke
 //  console.log(movesDetails);
 
   return (
-    <div className={`filter-container z-10  bg-white shadow-md py-4 pt-9 px-4 overflow-y-scroll ${filterIsActive && 'active'}`}>
+    <div className={`filter-container z-20  bg-white shadow-md py-4 pt-9 px-4 overflow-y-scroll ${filterIsActive && 'active'}`}>
       <div className={` filter-name-section h-8 mt-8 cursor-pointer ${filterIsActive && 'active'}`}>
          <div className="flex">
            <img src={filterIcon} className="w-5 mr-2 my-auto"/>

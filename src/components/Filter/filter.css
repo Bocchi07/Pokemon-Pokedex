@@ -86,7 +86,7 @@
     width: 20rem;
     padding: 5rem 1em;
     margin-top: 1em;
-    opacity: 1;
+    opacity: 0;
     display: none;
     transition: all 300ms ease;
     transform: translateX(-100rem);
@@ -151,6 +151,7 @@
    margin-bottom: 37.2rem;
    align-items:start; 
    border-bottom: none;
+  transform: translateY(1.1em);
 }
 
 .Generations-content.active{

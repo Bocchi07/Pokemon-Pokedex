@@ -1,5 +1,6 @@
 import React from "react";
 import "../App.css";
+import Pokeball from "../assets/Images/pokeball.png"
 
 function PokemonList({
   pokemonSprite,
@@ -43,7 +44,7 @@ function PokemonList({
 
   const pokemonData = {
     name: sliceName(),
-    id: pokemonFixID,
+    id: String(pokemonId).padStart(4, '0'),
     types: pokemonTypes.map((t) => t),
     height: height,
     weight: weight,
@@ -55,29 +56,38 @@ function PokemonList({
 
   return (
     <section
-      className="pokemon-list-container  rounded-3xl h-56 max-h-68  flex flex-col items-center shadow-md"
+      className={`relative pokemon-list-container p-4 rounded-3xl h-56 max-h-68  flex items-center justify-between shadow-md overflow-hidden ${pokemonTypes[0]}`}
       onClick={() => handlePokemonPreview(pokemonData, pokemonPrevId, pokemonNextId)}
     >
-      <img
-        src={pokemonSprite}
-        className={`pokemon-img h-32 translate-y-[-.4em] max-h-32`}
-        alt="img not found"
-      />
-      <h3 className="text-lg font-semibold">{sliceName()}</h3>
-      <p className="text-sm mt-1">{pokemonFixID}</p>
 
-      <div className="flex gap-x-3">
-        {pokemonTypes.map((b, index) => {
-          return (
-            <div
-              key={index}
-              className={` text-sm text-center mt-2 px-5 py-1 rounded-2xl ${b}`}
-            >
-              {b}
-            </div>
-          );
-        })}
-      </div>
+    <div className="z-10 flex flex-col items-left justify-start mb-auto ">
+       <h3 className="text-3xl text-white font-semibold mb-4">{sliceName()}</h3>
+        <div className="">
+          {pokemonTypes.map((b, index) => {
+            return (
+              <div
+                key={index}
+                className={` max-w-24 font-semibold text-sm text-center mt-2 px-2 py-1 border border-white rounded-2xl ${b}`}
+              >
+                {b}
+              </div>
+            );
+          })}
+        </div>
+    </div>
+
+    <div className="z-10 h-full flex flex-col justify-between">
+      <p className="text-xl font-semibold text-whiite-600 opacity-50 ml-auto mb-auto">#{String(pokemonId).padStart(4, "0")}</p>
+      <img
+      src={pokemonSprite}
+      className={` z-10 pokemon-img h-38 max-h-40`}
+      alt="img not found"
+    />
+
+    </div>
+
+  <img src={Pokeball} className="w-[13rem] absolute z-0 right-0 bottom-[-2.5rem] opacity-50"/>
+
     </section>
   );
 }
