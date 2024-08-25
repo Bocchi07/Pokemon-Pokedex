@@ -7,8 +7,17 @@
 
 body {
   font-family: Arial, Helvetica, sans-serif;
+  background-color: rgba(240, 240, 250, .9);
 }
 
+.header{
+  transition: all 300ms ease-in-out;
+  background-color: rgba(240, 240, 250, 1);
+}
+
+.hidden {
+  top: -100px; /* Move the header out of view */
+}
 
 footer{
   transform: translateY(4rem)
@@ -47,7 +56,40 @@ summary{
       width: 10rem;
       transform: translateY(-.3rem);
   }
+
+  .list-filter-container{
+    display: flex;
+  }
+
+  .filter-section{
+    width: 20%;
+    margin-top: 0;
+    padding-inline: 1rem;
+  }
+
+  .filter-section .filter{
+    display: flex;
+    flex-direction: column;
+    column-gap: 1.5em;
+    row-gap: .5em;
+  }
+
+  .pokemon-list-wrapper{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: .8em .7em;
+  }
 }
+
+@media (max-width: 859px){
+  .pokemon-list-wrapper{
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: .8em .7em;
+  }
+}
+
+
 
 .pokemon-list-container {
   cursor: pointer;
@@ -55,7 +97,7 @@ summary{
 
 .pokemon-list-container .pokemon-img {
   transition: all 200ms ease-in-out;
-  /* filter: drop-shadow(35px -11px 4px rgba(0, 0, 0, 0.096)); */
+  filter: drop-shadow(10px 5px 3px  rgba(0, 0, 0, .2));
 }
 
 .pokemon-list-container:hover {
@@ -77,7 +119,7 @@ summary{
 }
 
 .fire {
-  background-color: #fd7d24;
+  background-color: rgba(250, 117, 35, .9);
   color: white;
 }
 
@@ -87,7 +129,7 @@ summary{
 }
 
 .grass {
-  background-color: #78c850;
+  background-color: rgba(64, 198, 107, 1);
   color: white;
 }
 
@@ -97,6 +139,7 @@ summary{
 
 .psychic {
   background-color: #f85888;
+  color: white;
 }
 
 .ice {
@@ -273,8 +316,9 @@ summary{
   width: 100%;
 }
 
-.search-pokemon{
-  border: 1px solid rgb(194, 189, 189);
+input[type="text"]{
+/*  border: 1px solid rgb(194, 189, 189);*/
+  padding-left: 1rem;
 }
 
 option{
@@ -296,4 +340,8 @@ option{
 .sort-by{
   border:  1px solid rgba(65, 63, 63, 0.2);
   outline: none;
+}
+
+li{
+  cursor: pointer;
 }

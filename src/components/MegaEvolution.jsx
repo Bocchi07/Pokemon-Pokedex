@@ -8,7 +8,7 @@ function MegaEvolutionList() {
   useEffect(() => {
     const fetchMegaEvolutions = async () => {
       try {
-        const response = await axios.get('https://pokeapi.co/api/v2/pokemon-species?limit=1000');
+        const response = await axios.get('https://pokeapi.co/api/v2/pokemon-species?limit=100000&offset=0');
         const speciesList = response.data.results;
 
         const megaEvolutionData = await Promise.all(

@@ -110,7 +110,7 @@ function PokemonPreview({handleEvolutionStagesPreview, pokemonData, closePage, e
   // console.log(nextPokemonFix())
 
   return (
-    <div className="pokemon-preview p-10  rounded-md relative mt-12">  
+    <div className="z-10 pokemon-preview p-10  rounded-md relative mt-12">
       <div>
           <button onClick={closePage}> Back </button>
         </div>
@@ -121,7 +121,7 @@ function PokemonPreview({handleEvolutionStagesPreview, pokemonData, closePage, e
 
               <div className="opacity-70">
                   <h2 className="font-semibold text-sm">{prevPokemonFix() && prevPokemonFix().name}</h2>
-                 <span className ="span-id text-xs text-gray-600 font-semibold">#{String(prevPokemon.id).padStart(4, "0") }</span>
+                 <span className ="span-id text-xs text-gray-600 font-semibold">#{prevPokemon && String(prevPokemon.id).padStart(4, "0") }</span>
               </div>
             
         </div>    
@@ -139,7 +139,7 @@ function PokemonPreview({handleEvolutionStagesPreview, pokemonData, closePage, e
         <div className="next-container text-right flex">
           <div className="opacity-70">
             <h2 className="font-semibold text-sm">{nextPokemonFix() && nextPokemonFix().name}</h2>
-            <span className = "text-xs span-id  text-gray-600 font-semibold">#{String(nextPokemon.id).padStart(4, "0")}</span>
+            <span className = "text-xs span-id  text-gray-600 font-semibold">#{nextPokemon && String(nextPokemon.id).padStart(4, "0")}</span>
           </div>
 
           <img className="w-7 text-right mb-auto ml-2 cursor-pointer" src={rightArrow} alt="" onClick={switchNextPage} disabled={!nextPokemon}/>

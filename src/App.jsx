@@ -8,6 +8,8 @@ import Header from "./components/Header.jsx";
 import FilteringSection from "./components/Filter/FilteringSection.jsx"
 import Item from "./components/Items/Item.jsx"
 import MegaEvolution from "./components/MegaEvolution.jsx"
+import Home from "./Home.jsx"
+import Pokeball from "./assets/Images/pokeball.png"
 
 function App() {
   const [page, setPage] = useState(1);
@@ -480,8 +482,8 @@ function App() {
  // console.log(filterIsActive)
 
   const loadingPage = (
-    <div className="loading-message-container flex flex-col items-center justify-center h-[90vh]"> 
-      <img src={LoadingImg} alt="" className="w-[20%] mb-4"/>
+    <div className="z-10 loading-message-container flex flex-col items-center justify-center h-[90vh]">
+      <img src={LoadingImg} alt="" className="w-[20%] mb-4 z-10"/>
       <h5 className="text-xl font-bold loading-message">Loading <span>...</span></h5>
     </div>
   );
@@ -501,21 +503,7 @@ function App() {
   } else if (switchPage === "Pagination") {
     content = (
       <div className="flex gap-x-4 ">
-        <FilteringSection
-          searchPokemon={searchPokemon}
-          handleSearch={handlePokemonInput}
-          searchedPokemon={handleSearchedPokemon}
-          setFilterIsActive = {setFilterIsActive}
-          filterIsActive = {filterIsActive}
-          handleFilterIsActive = {handleFilterIsActive}
-          setCurrentPokemon = {setCurrentPokemon}
-          handleEvolutionStagesPreview = {handleEvolutionStagesPreview}
-          setLoading = {setLoading}
-          setPage = {setPage}
-          setFilterPage = {setFilterPage}
-          filterPage = {filterPage}
-          setActivePage = {setActivePage}
-        />
+
         <Pagination
           prevBtn={prevPokemon}
           nextBtn={nextPokemon}
@@ -525,11 +513,17 @@ function App() {
           currentPokemon={currentPokemon}
           handlePokemonPreview={handlePokemonPreview}
           page ={page}
+          setPage = {setPage}
           setFilterIsActive = {setFilterIsActive}
           filterIsActive = {filterIsActive}
           handleFilterIsActive = {handleFilterIsActive}
           activePage = {activePage}
           filterPage = {filterPage}
+          setCurrentPokemon = {setCurrentPokemon}
+          handleEvolutionStagesPreview = {handleEvolutionStagesPreview}
+          setLoading = {setLoading}
+          setFilterPage = {setFilterPage}
+          setActivePage = {setActivePage}
         />
       </div>
     );
@@ -554,11 +548,13 @@ function App() {
   }
 
   return(
-  <>
-    <Header /> 
+  <div className="relative">
+    {/*<Home />*/}
+    <Header />
     {/*<MegaEvolution />*/}
     {loading ? loadingPage : content}
-  </>)
+    <img src={Pokeball} alt="" className="fixed top-[-4rem] z-0 left-[-8rem] opacity-50 w-[40rem]"/>
+  </div>)
 }
 
 export default App;

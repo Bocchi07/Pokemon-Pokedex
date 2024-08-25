@@ -22,6 +22,10 @@ function FilteringSection({setLoading, searchPokemon, handleSearch, searchedPoke
   const [pokemonGenerations, setPokemonGenerations] = useState();
   const [pokemonRegions, setPokemonRegions] = useState();
   const [pokemonName, setPokemonName] = useState([]);
+  const [selectedForm, setSelectedForm] = useState('');
+  const [filterTypesValue, setFilterTypesValue] = useState();
+  const [filterGenValue, setFilterGenValue] = useState();
+  const [filterMovesValue, setFilterMovesValue] = useState();
 
   const handleClick = (index) => {
     setActiveIndex(activeIndex === index ? null : index);
@@ -31,13 +35,33 @@ function FilteringSection({setLoading, searchPokemon, handleSearch, searchedPoke
     item === activeMovesSection ?  setActiveMovesSection(null) :  setActiveMovesSection(item);
   }
 
+  const handleTypesChange = (event) => {
+    setFilterTypesValue(event.target.value);
+    handleTypePokemon(event.target.value)
+    console.log(event.target.value);
+  };
+
+  const handleGenerationChange = (event) => {
+    handleGenerationPokemon(event.target.value)
+  };
+
+  const handleMoveChange = (event) => {
+    setFilterMovesValue(event.target.value);
+    console.log(filterMovesValue);
+  };
+
+  const handleFormChange = (event) => {
+    setFilterMovesValue(event.target.value);
+    handleAllFormsPokemon(event.target.value);
+    // console.log(filterMovesValue);
+  };
 
 
   const handleTypePokemon = async (type) => {
       setLoading(true)
       setActivePage(false)
       setPokemonTypesActive(type)
-      console.log(filterPage)
+      // console.log(filterPage)
 
       try{
         // const offset = (page - 1) * 20;
@@ -82,10 +106,9 @@ function FilteringSection({setLoading, searchPokemon, handleSearch, searchedPoke
       }
   }
 
-    const handleGenerationPokemon = async (data) => {
+  const handleGenerationPokemon = async (data) => {
         setLoading(true)
         setActivePage(false)
-
 
         try{
           // const offset = (page - 1) * 20;
@@ -133,6 +156,72 @@ function FilteringSection({setLoading, searchPokemon, handleSearch, searchedPoke
         }
       }
 
+  const handleAllFormsPokemon = async (forms) => {
+    setLoading(true)
+      try{
+         const response = await axios.get("https://pokeapi.co/api/v2/pokemon-species?limit=100000&offset=0")
+         const speciesList = response.data.results;
+
+         const allFormsData = await Promise.all(
+          speciesList.map(async (species) => {
+         const speciesData = await axios.get(species.url);
+
+         if (speciesData.data.varieties.length > 1) {
+            const allForms = speciesData.data.varieties.filter((variety) =>
+            variety.pokemon.name.includes(forms)
+          );
+
+
+         if (allForms.length > 0) {
+            return {
+              // name: speciesData.data.name,
+              allForms: allForms.map((form) => form.pokemon),
+              };
+            }}
+               return null;
+          }))
+
+          const filteredForms = allFormsData.filter((item) => item !== null);
+          const filteredResponse = filteredForms.map(data => data.allForms)
+          const filteredUrl = filteredResponse.flat().map( async (d) => {
+          const filteredData = await axios.get(d.url);
+
+          return filteredData
+          })
+
+          const filterPromise = await Promise.all(filteredUrl.map(d => d));
+          const filteredID = filterPromise.map(d => d.data.id);
+
+          const pokemonIdPromises = filteredID.map(res => axios.get(`https://pokeapi.co/api/v2/pokemon/${res}`))
+          const pokemonIdResponses = await Promise.all(pokemonIdPromises);
+
+          const pokemonData = pokemonIdResponses.map((res) => {
+            const { id, name, types, sprites, height, weight, stats, abilities } = res.data;
+            return {
+              id,
+              name: name[0].toUpperCase() + name.slice(1),
+              types: types.map((info) => info.type.name),
+              sprites: sprites.other["official-artwork"].front_default,
+              height,
+              weight,
+              stats: stats.map((s) => ({
+                statNum: s.base_stat,
+                statName: s.stat.name,
+              })),
+              abilities: abilities.map((a) => a.ability.name),
+            };
+          });
+
+         setCurrentPokemon(pokemonData)
+
+         console.log(filteredID);
+      } catch(error){
+        console.error(error)
+      } finally{
+        setLoading(false)
+        setActivePage(false)
+      }
+  }
 
   const filterContent = ["Types", "Generations", "Regions", "Moves"];
   const renderTypesActive = activeIndex == 0 && pokemonTypesArr.map((t, i) => <ul key={i} className='z-30 opacity-0 type-list flex flex-col items-left text-left'><li className="type-list rounded-md text-xs py-2" onClick={() => handleTypePokemon(t)}>{t[0].toUpperCase() + t.slice(1)}</li ></ul>);
@@ -182,6 +271,7 @@ function FilteringSection({setLoading, searchPokemon, handleSearch, searchedPoke
 
         setPokemonTypesArr(name) 
       }catch(error){
+
         console.error(error)
       }
     }
@@ -225,55 +315,96 @@ function FilteringSection({setLoading, searchPokemon, handleSearch, searchedPoke
   }, [])
 
 
-//  console.log(movesDetails);
+
+ // console.log(pokemonTypesArr);
 
   return (
-    <div className={`filter-container z-20  bg-white shadow-md py-4 pt-9 px-4 overflow-y-scroll ${filterIsActive && 'active'}`}>
-      <div className={` filter-name-section h-8 mt-8 cursor-pointer ${filterIsActive && 'active'}`}>
-         <div className="flex">
-           <img src={filterIcon} className="w-5 mr-2 my-auto"/>
-           <h5 className='font-semibold text-base my-auto'>Filter</h5>
-         </div>
+    <div className="filter-section">
+      <div>
+        <div className="filter flex gap-y-2 gap-x-4 flex-wrap">
 
-          <div>
-            <IoClose className="close-filter-icon my-auto text-sm  rounded-full h-6 w-6 p-1 cursor-pointer" onClick={handleFilterIsActive}/>
-            <LuArrowLeftToLine className="arrow-close-icon h-6 w-6 p-1 rounded-full cursor-pointer" onClick={handleFilterIsActive}/>
-          </div>
+          <select id="forms" className="form-select w-44 h-10 px-3 text-sm rounded-md bg-white border-0 border-slate-100 shadow-md cursor-pointer" onChange={handleFormChange}>
+              <option value="">All Forms</option>
+              <option value="standard">Standard</option>
+              <option value="mega">Mega Evolution</option>
+              <option value="gmax">Gigantamax</option>
+              <option value="alola">Alolan Form</option>
+              <option value="galar">Galarian Form</option>
+              <option value="primal">Primal</option>
+          </select>
+
+          <select onChange={handleTypesChange} className="w-44 h-10  px-3 rounded-md text-sm bg-white border-0 border-slate-100 shadow-md cursor-pointer ">
+            <option value="" className="text-xs">Types</option>
+            {pokemonTypesArr && pokemonTypesArr.map((t,i) => {
+                return <option key={i}value={t} className="text-xs">{t[0].toUpperCase() + t.slice(1)}</option>
+            })}
+          </select>
+
+          <select onChange={handleGenerationChange} className="w-44 h-10 px-3 text-sm rounded-md bg-white border-0 border-slate-100 shadow-md cursor-pointer">
+            <option value="" className="text-xs">Generation</option>
+            {pokemonGenerations && pokemonGenerations.map((g, i) => {
+                return <option key={i} value={g} className="text-xs">{g[0].toUpperCase() + g.slice(1)}</option>
+            })}
+          </select>
+
+          <select onChange={handleMoveChange} className="w-44 h-10 px-3 text-sm rounded-md bg-white border-0 border-slate-100 shadow-md cursor-pointer mb-8">
+            <option value="" className="text-xs">Moves</option>
+            {pokemonGenerations && pokemonGenerations.map((t, i) => {
+                return <option key={i} value={t} className="text-xs">{t[0].toUpperCase() + t.slice(1)}</option>
+            })}
+          </select>
+
       </div>
 
-
-      <div className='filtering-pokemon mt-4 relative'>
-        {
-          filterContent.map((f, index) => {
-            return (
-              <div className={`relative ${f}-content z-10 details-wrapper relative ${activeIndex === index ? "active" : null }`} key={index} onClick={() => {
-                 handleClick(index) 
-                 activeMovesSection !== false &&  setActiveMovesSection(null)
-              }}>
-                  <details>
-
-                    <summary className='font-semibold flex items-center'>
-                      {f == "Types" && <img src={typesIcon} className="h-5 w-7 my-auto"/>}
-                      {f == "Generations" && <img src={generationIcon} className="h-4 my-auto mx-1"/>}
-                      {f == "Regions" && <img src={regionIcon} className="h-4 mx-1  my-auto"/>}
-                      {f == "Moves" && <img src={movesIcon} className="h-4 mx-1 my-auto"/>}
-                      {f}
-                      </summary>
-
-                  </details>
-                  <IoIosArrowDown className={`show-more-icon`}/>
-              </div>
-            )
-          } )
-        }
-
-        {renderTypesActive}
-        {renderGenerationActive}
-        {renderRegionActive}
-        {movesDetails}
 
       </div>
     </div>
+    // <div className={`filter-container z-20  bg-white shadow-md py-4 pt-9 px-4 overflow-y-scroll ${filterIsActive && 'active'}`}>
+    //   <div className={` filter-name-section h-8 mt-8 cursor-pointer ${filterIsActive && 'active'}`}>
+    //      <div className="flex">
+    //        <img src={filterIcon} className="w-5 mr-2 my-auto"/>
+    //        <h5 className='font-semibold text-base my-auto'>Filter</h5>
+    //      </div>
+
+    //       <div>
+    //         <IoClose className="close-filter-icon my-auto text-sm  rounded-full h-6 w-6 p-1 cursor-pointer" onClick={handleFilterIsActive}/>
+    //         <LuArrowLeftToLine className="arrow-close-icon h-6 w-6 p-1 rounded-full cursor-pointer" onClick={handleFilterIsActive}/>
+    //       </div>
+    //   </div>
+
+
+    //   <div className='filtering-pokemon mt-4 relative'>
+    //     {
+    //       filterContent.map((f, index) => {
+    //         return (
+    //           <div className={`relative ${f}-content z-10 details-wrapper relative ${activeIndex === index ? "active" : null }`} key={index} onClick={() => {
+    //              handleClick(index)
+    //              activeMovesSection !== false &&  setActiveMovesSection(null)
+    //           }}>
+    //               <details>
+
+    //                 <summary className='font-semibold flex items-center'>
+    //                   {f == "Types" && <img src={typesIcon} className="h-5 w-7 my-auto"/>}
+    //                   {f == "Generations" && <img src={generationIcon} className="h-4 my-auto mx-1"/>}
+    //                   {f == "Regions" && <img src={regionIcon} className="h-4 mx-1  my-auto"/>}
+    //                   {f == "Moves" && <img src={movesIcon} className="h-4 mx-1 my-auto"/>}
+    //                   {f}
+    //                   </summary>
+
+    //               </details>
+    //               <IoIosArrowDown className={`show-more-icon`}/>
+    //           </div>
+    //         )
+    //       } )
+    //     }
+
+    //     {renderTypesActive}
+    //     {renderGenerationActive}
+    //     {renderRegionActive}
+    //     {movesDetails}
+
+    //   </div>
+    // </div>
   );
 }
 

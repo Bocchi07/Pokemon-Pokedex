@@ -56,7 +56,7 @@ function PokemonList({
 
   return (
     <section
-      className={`relative pokemon-list-container p-4 rounded-3xl h-56 max-h-68  flex items-center justify-between shadow-md overflow-hidden ${pokemonTypes[0]}`}
+      className={` relative pokemon-list-container p-4 rounded-2xl h-48 max-h-68  flex items-center justify-between shadow-md border-2 border-slate-50 overflow-hidden ${pokemonTypes[0]}`}
       onClick={() => handlePokemonPreview(pokemonData, pokemonPrevId, pokemonNextId)}
     >
 
@@ -80,7 +80,7 @@ function PokemonList({
       <p className="text-xl font-semibold text-whiite-600 opacity-50 ml-auto mb-auto">#{String(pokemonId).padStart(4, "0")}</p>
       <img
       src={pokemonSprite}
-      className={` z-10 pokemon-img h-38 max-h-40`}
+      className={` z-10 pokemon-img h-full object-contain`}
       alt="img not found"
     />
 
