@@ -551,10 +551,11 @@ function App() {
   <div className="relative">
     {/*<Home />*/}
     <Header />
-    {/*<MegaEvolution />*/}
-    {loading ? loadingPage : content}
-    <img src={Pokeball} alt="" className="fixed top-[-4rem] z-0 left-[-8rem] opacity-50 w-[40rem]"/>
-  </div>)
+    {loading ? loadingPage :  <Item setLoading={setLoading} loading={loading}/>}
+
+    {/*{loading ? loadingPage : content}*/}
+  {/*  <img src={Pokeball} alt="" className="fixed top-[-4rem] z-0 left-[-8rem] opacity-50 w-[40rem]"/>
+ */} </div>)
 }
 
 export default App;

@@ -11,6 +11,7 @@ import generationIcon from "../../assets/Icons/generationIcon.png"
 import movesIcon from "../../assets/Icons/movesIcon.png"
 import filterIcon from "../../assets/Icons/filterIcon.png"
 import { LuArrowLeftToLine } from "react-icons/lu";
+import FilterItem from "./FilterItem.jsx";
 
 function FilteringSection({setLoading, searchPokemon, handleSearch, searchedPokemon, setFilterIsActive, filterIsActive, handleFilterIsActive, setCurrentPokemon, handleEvolutionStagesPreview, setPage, setFilterPage, filterPage, setActivePage}) {
   const [page, setPages] = useState(1);
@@ -324,13 +325,13 @@ function FilteringSection({setLoading, searchPokemon, handleSearch, searchedPoke
         <div className="filter flex gap-y-2 gap-x-4 flex-wrap">
 
           <select id="forms" className="form-select w-44 h-10 px-3 text-sm rounded-md bg-white border-0 border-slate-100 shadow-md cursor-pointer" onChange={handleFormChange}>
-              <option value="">All Forms</option>
-              <option value="standard">Standard</option>
-              <option value="mega">Mega Evolution</option>
-              <option value="gmax">Gigantamax</option>
-              <option value="alola">Alolan Form</option>
-              <option value="galar">Galarian Form</option>
-              <option value="primal">Primal</option>
+              <option value="" className="text-xs">All Forms</option>
+              <option value="standard" className="text-xs">Standard</option>
+              <option value="mega" className="text-xs">Mega Evolution</option>
+              <option value="gmax" className="text-xs">Gigantamax</option>
+              <option value="alola" className="text-xs">Alolan Form</option>
+              <option value="galar" className="text-xs">Galarian Form</option>
+              <option value="primal" className="text-xs">Primal</option>
           </select>
 
           <select onChange={handleTypesChange} className="w-44 h-10  px-3 rounded-md text-sm bg-white border-0 border-slate-100 shadow-md cursor-pointer ">

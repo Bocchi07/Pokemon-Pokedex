@@ -19,6 +19,7 @@ body {
   top: -100px; /* Move the header out of view */
 }
 
+
 footer{
   transform: translateY(4rem)
 }
@@ -42,43 +43,45 @@ summary{
     width: 17rem;
   }
 
-  .search-filter-container div:first-child {
-      display: flex;
-      flex-direction: row-reverse;
-      align-items: center;
-    }
 
-  .search-field-container{
-      flex: 1;
-  }
 
-  .filter-name-page{
-      width: 10rem;
-      transform: translateY(-.3rem);
-  }
-
-  .list-filter-container{
+.search-filter-container div:first-child {
     display: flex;
+    flex-direction: row-reverse;
+    align-items: center;
   }
 
-  .filter-section{
-    width: 20%;
-    margin-top: 0;
-    padding-inline: 1rem;
-  }
+.search-field-container{
+    flex: 1;
+}
 
-  .filter-section .filter{
-    display: flex;
-    flex-direction: column;
-    column-gap: 1.5em;
-    row-gap: .5em;
-  }
+.filter-name-page{
+    width: 10rem;
+    transform: translateY(-.3rem);
+}
 
-  .pokemon-list-wrapper{
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: .8em .7em;
-  }
+.list-filter-container{
+  display: flex;
+}
+
+.filter-section{
+  width: 20%;
+  margin-top: 0;
+  padding-inline: 1rem;
+}
+
+.filter-section .filter{
+  display: flex;
+  flex-direction: column;
+  column-gap: 1.5em;
+  row-gap: .5em;
+}
+
+.pokemon-list-wrapper{
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: .8em .7em;
+}
 }
 
 @media (max-width: 859px){
@@ -90,6 +93,13 @@ summary{
 }
 
 
+.tr-content{
+  border-bottom: 1px solid lightgray;
+}
+
+.th{
+  border: 1px solid lightgray;
+}
 
 .pokemon-list-container {
   cursor: pointer;
@@ -344,4 +354,13 @@ option{
 
 li{
   cursor: pointer;
+}
+
+.load-more-items{
+  background-color: rgba(40, 100, 225, .9);
+  transition: background 400ms ease-in-out;
+}
+
+.load-more-items:hover{
+  background-color: rgba(20, 100, 255, 1);
 }
