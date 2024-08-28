@@ -74,10 +74,10 @@ function Item({setLoading}) {
 
 
   return (
-    <div className="mt-20 z-20 bg-white m-4 p-4 relative rounded-md shadow-xl">
+    <div className="mt-20 z-20 bg-slate-50  p-4 relative rounded-md shadow-xl">
       <h1 className="text-3xl font-bold">Pokémon item list</h1>
 
-      <p className="opacity-80 text-base my-4 bg-slate-100 text-left p-4 rounded-md">Discover a variety of items available in the Pokémon world, from Poké Balls to Potions. Each item has a unique effect, helping you catch Pokémon, heal your team, or gain an edge in battle. Browse through the categories to learn how these items can help you on your journey to becoming a Pokémon Master!</p>
+      <p className="opacity-80 text-base my-4 bg-slate-200 text-left p-4 rounded-md">Discover a variety of items available in the Pokémon world, from Poké Balls to Potions. Each item has a unique effect, helping you catch Pokémon, heal your team, or gain an edge in battle. Browse through the categories to learn how these items can help you on your journey to becoming a Pokémon Master!</p>
 
      <table className="table w-full p-4">
           <thead>
@@ -93,16 +93,16 @@ function Item({setLoading}) {
             {
               itemList && itemList.map((data, index) => {
                 return (
-                   <tr className="tr-content pb-2" key={index}>
+                   <tr className="tr-content pb-2 hover:bg-violet-50 transition-colors" key={index}>
                       <td className="td text-xs font-semibold opacity-70">#{String(index + 1).padStart(4, '0')}</td>
 
-                      <td className=" border-0 p-2 text border-bottom-black flex items-center">
+                      <td className=" border-0 p-2 text border-bottom-black flex flex-wrap items-center ">
                         <img src={data.sprites} alt="img_not_found" />
-                        <p className="font-semibold ">{data.name}</p>
+                        <p className="font-semibold text-sm text-blue-500">{data.name}</p>
                       </td>
 
-                      <td className="td name">{data.category}</td>
-                      <td className="td description text-left text-sm">{data.effect_entries}</td>
+                      <td className="td name text-sm text-slate-700 " >{data.category}</td>
+                      <td className="td description text-left text-sm text-slate-700">{data.effect_entries}</td>
                    </tr>
                   )
               })

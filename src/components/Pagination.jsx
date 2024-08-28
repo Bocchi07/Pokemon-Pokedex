@@ -28,14 +28,15 @@ function Pagination({
   setLoading,
   setPage,
   setFilterPage,
-  setActivePage
+  setActivePage,
+  handleBar
 }) {
   // console.log(currentPokemon);
   return (
-    <div className={`z-20 pagination-container w-full ml-[0%] h-[90%] rounded-md p-4 mt-20 `} >
+    <div className={`z-20 pagination-container w-full ml-[0%] h-[90%] rounded-md  mt-20 `} onClick={() => handleBar(false)}>
       {/*<h1 className="font-extrabold text-5xl text-blue-500 mb-4">Pokédex</h1>*/}
       <div className="search-filter-container">
-        <div className="w-full gap-y-2 items-center gap-x-3 px-4 mb-8 ">
+        <div className="w-full gap-y-2 items-center">
           <div className='search-field-container relative min-w-[100%]'>
             <form action="" onSubmit={searchedPokemon} className=" w-full relative">
               <input 
@@ -48,7 +49,7 @@ function Pagination({
                 style={{ padding: "1.2rem 3rem" }}
               />
 
-              <button className="absolute h-11 top-2 right-2 py-1 text-white font-semibold bg-blue-400 px-9 rounded-md text-sm cursor-pointer">Search</button>
+              <button className="search-btn absolute h-11 top-2 right-2 py-1 text-white font-semibold bg-blue-400 px-9 rounded-md text-sm cursor-pointer">Search</button>
               <FiSearch className="absolute top-3 left-5 h-8 text-xl opacity-80 text-blue-500"/>
             </form>
 
@@ -82,7 +83,7 @@ function Pagination({
           setActivePage = {setActivePage}
           />
 
-        <div className="pokemon-list-wrapper gap-y-5 gap-x-4 ">
+        <div className="pokemon-list-wrapper ">
           {currentPokemon.map((c, index) => {
             return (
               <PokemonList

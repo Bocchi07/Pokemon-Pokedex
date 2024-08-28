@@ -1,5 +1,6 @@
 import React, {useState} from 'react'
 import "../App.css"
+import { MdKeyboardArrowLeft } from "react-icons/md";
 
 function PokemonEvolutionStages({handleEvolutionStagesPreview, evolutionStage, firstForm, secondForm, lastForm}) {
    
@@ -88,13 +89,13 @@ function PokemonEvolutionStages({handleEvolutionStagesPreview, evolutionStage, f
         <div className='flex justify-around items-center gap-x-8 pr-4 p-8'>
             <div className='w-[25%]'>
                     { firstForm && 
-                        <div onClick={() => handleEvolutionStagesPreview(firstPokemon)} className="evolution-stages flex justify-center items-center bg-gray-100 p-8 rounded-full my-auto hover-bg-gray-300">
+                        <div onClick={() => handleEvolutionStagesPreview(firstPokemon)} className="evolution-stages relative flex justify-center items-center bg-gray-200 p-8 rounded-full my-auto hover-bg-gray-300">
                             <img src={firstForm}/>
                         </div>
                     }
             
                     {evolutionStage && 
-                        <div>
+                        <div className="relative">
                             <h3 className='text-lg font-semibold'> {handlePokemonName() && handlePokemonName().first} </h3>
                             <p>{firstFormId}</p>
                             <div className='flex gap-x-2 justify-center'>
@@ -105,11 +106,13 @@ function PokemonEvolutionStages({handleEvolutionStagesPreview, evolutionStage, f
                                 }
                             </div>
 
-                            <div>
-                                <p> </p>
-                            </div>
+
+
+                                {/*<MdKeyboardArrowLeft className="absolute top-[-4rem] right-[-2.5rem] text-3xl opacity-80 rotate-180 " />*/}
                         </div>
-                        }
+
+                       }
+
                 </div> 
             
                     {

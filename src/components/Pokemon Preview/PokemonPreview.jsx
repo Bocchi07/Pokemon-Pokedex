@@ -6,10 +6,10 @@ import PokeballIcon from "../../assets/Icons/Pokeball.png"
 import Info from "../../assets/Icons/info.svg"
 import rightArrow from "../../assets/Icons/right-arrow.svg";
 import "./preview.css";
-
+import { MdKeyboardArrowLeft } from "react-icons/md";
 
 function PokemonPreview({handleEvolutionStagesPreview, pokemonData, closePage, evolutionStage, pokemonAddInfo, previewPokemon, prevPokemon, nextPokemon, loading, switchNextPage, switchPrevPage, prevEndPoint, prevSetEndPoint }) {
-  const pokemonType = pokemonData.types[0];
+  const pokemonType = pokemonData && pokemonData.types[0];
   const [pokemonImg, setPokemonImg] = useState([]);
   let totalStats = 0;
 
@@ -110,13 +110,13 @@ function PokemonPreview({handleEvolutionStagesPreview, pokemonData, closePage, e
   // console.log(nextPokemonFix())
 
   return (
-    <div className="z-10 pokemon-preview p-10  rounded-md relative mt-12">
+    <div className="z-10 pokemon-preview  rounded-md relative">
       <div>
           <button onClick={closePage}> Back </button>
         </div>
 
       <div className="preview-container flex justify-between">
-       <div className={`prev-container text-left flex ${prevEndPoint ? "active" : ''}`}>
+       <div className={`prev-container text-left ${prevEndPoint ? "active" : ''}`}>
           <img className="w-7 text-right mb-auto mr-2 cursor-pointer rotate-180" src={rightArrow} alt="" onClick={switchPrevPage} disabled={!prevPokemon}/>
 
               <div className="opacity-70">
@@ -136,7 +136,7 @@ function PokemonPreview({handleEvolutionStagesPreview, pokemonData, closePage, e
          </div>
 
 
-        <div className="next-container text-right flex">
+        <div className="next-container text-right ">
           <div className="opacity-70">
             <h2 className="font-semibold text-sm">{nextPokemonFix() && nextPokemonFix().name}</h2>
             <span className = "text-xs span-id  text-gray-600 font-semibold">#{nextPokemon && String(nextPokemon.id).padStart(4, "0")}</span>
@@ -153,9 +153,25 @@ function PokemonPreview({handleEvolutionStagesPreview, pokemonData, closePage, e
               alt="image_not_found"
               className={` bg-${pokemonType} h-full flex items-end justify-center rounded-md mx-auto ${loading ? "loading" : " "}`}
             />
+
+
+            <MdKeyboardArrowLeft className="sm-arrow absolute top-1/2 left-[-1.5rem] text-3xl opacity-50" onClick={switchPrevPage} disabled={!prevPokemon}/>
+             <MdKeyboardArrowLeft className="sm-arrow absolute top-1/2 right-[-1.5rem] text-3xl opacity-50 rotate-180"  onClick={switchNextPage} disabled={!nextPokemon}/>
         </div>
 
-        <div className=" rounded-md flex-1 p-7 text-left ">
+         <div className=" mb-8 gap-x-2 z-10 mt-4 pokemon-type-sm w-full justify-center">
+               <h4 className="mb-2 font-semibold text-lg">Type</h4>
+
+               <div className="flex justify-center">
+                  {
+                    pokemonData.types.map((b, i) => {
+                    return <div key={i} className={`${b} rounded-full text-base py-1 mr-2 px-7`}> {b} </div>
+                    })
+                  }
+                </div>
+            </div>
+
+        <div className=" rounded-md flex-1 text-left">
           <div className="flex justify-between items-center">
               <div>
                 <div className = "flex align-center">
@@ -179,18 +195,18 @@ function PokemonPreview({handleEvolutionStagesPreview, pokemonData, closePage, e
               </div>  
           </div> 
    
-          <div className="relative mt-8 w-full grid grid-cols-4">
-              <div>
+          <div className="about-pokemon-wrapper relative mt-8 w-full ">
+              <div className="about-pokemon">
                 <h4 className="text-lg mb-2 font-semibold">Height</h4>
                 <div className="w-28 text-sm px-2 py-1 rounded-md bg-gray-200 ">{getPokemonHeight}cm</div>
               </div>
 
-              <div>
+              <div className="about-pokemon">
                 <h4 className="text-lg mb-2 font-semibold">Weight</h4>
                 <div className="w-28 text-sm px-2 py-1 rounded-md bg-gray-200 ">{getPokemonWeight}kg</div>
               </div>
 
-              <div>
+              <div className="about-pokemon">
                 <h4 className="text-lg mb-2 font-semibold">Abilities</h4>
                 <select name="" id="" className="w-28 text-sm px-2 py-1 rounded-md bg-gray-200 ">
                   {
@@ -199,7 +215,7 @@ function PokemonPreview({handleEvolutionStagesPreview, pokemonData, closePage, e
                 </select>
               </div>
 
-              <div>
+              <div className="about-pokemon">
                 <h4 className="text-lg mb-2 font-semibold">Egg Groups</h4>
                   <select className="w-28 text-sm px-2 py-1 rounded-md bg-gray-200 ">
                     {pokemonEggGroups}
@@ -207,9 +223,9 @@ function PokemonPreview({handleEvolutionStagesPreview, pokemonData, closePage, e
               </div>
           </div>
 
-        <div className="w-20 mt-8">
+        <div className="w-20 mt-8 pokemon-types-btm">
             <h4 className="mb-2 font-semibold text-lg">Type</h4>
-            <div className="flex gap-x-2 z-10">
+            <div className=" flex gap-x-2 z-10">
               {
                 pokemonData.types.map((b, i) => {
                 return <div key={i} className={`${b} rounded-2xl text-sm py-1 px-6`}> {b} </div>
@@ -224,8 +240,8 @@ function PokemonPreview({handleEvolutionStagesPreview, pokemonData, closePage, e
     
       </div>
 
-      <div className=" gap-x-4 mb-10 mt-8   pt-8">      
-          <div className="ml-4 h-80 flex-1">
+      <div className=" mb-10 mt-20">
+          <div className="h-90 flex-1 p-2 rounded-md">
             <h4 className="text-center text-2xl font-semibold mb-8">Statistic</h4>
              {
               pokemonData.stats.map((s, i) => {
@@ -234,7 +250,7 @@ function PokemonPreview({handleEvolutionStagesPreview, pokemonData, closePage, e
              } 
 
           <div className='flex text-left gap-4 '>
-                  <div className='max-w-[27%] w-[20%] mb-4 text-gray-600 text-nowrap'>
+                  <div className=' w-[20%] mb-4 text-gray-600 text-nowrap'>
                       <h4 className='font-semibold'>Total:</h4>
                   </div>
                   
@@ -263,13 +279,7 @@ function PokemonPreview({handleEvolutionStagesPreview, pokemonData, closePage, e
 
         </div>
 
-        <footer className="mt-40 text-sm">
-        © 2024 Pokédex Central.
-        Catch 'Em All with Us! 🌟
-        Explore the world of Pokémon and stay updated with the latest Pokédex entries.
-        Questions or feedback? Contact us at jeavenanda07@gmail.com.
-        Follow us on [social media links].
-        </footer>
+
     </div>
   );
 }

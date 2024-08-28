@@ -17,4 +17,50 @@
         font-size: 1.125rem;
         line-height: 1.75rem;
     }
+
+    .pokemon-preview {
+        padding: 1rem;
+        margin-top: 4rem;
+    }
+
+    .about-pokemon-wrapper{
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+    }
+
+    .pokemon-type-sm{
+        display: none;
+    }
+
+    .next-container,
+    .prev-container{
+        display: flex;
+    }
+
+    .sm-arrow{
+        display: none;
+    }
+}
+
+@media (max-width: 860px){
+    .pokemon-preview {
+        padding: 1rem;
+        margin-top: 4rem;
+    }
+
+    .about-pokemon{
+        display: flex;
+        align-items: center;
+        gap: .5rem;
+        margin-bottom: .5em;
+    }
+
+    .pokemon-types-btm{
+        display: none;
+    }
+
+    .next-container,
+    .prev-container{
+        display: none;
+    }
 }

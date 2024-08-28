@@ -56,18 +56,18 @@ function PokemonList({
 
   return (
     <section
-      className={` relative pokemon-list-container p-4 rounded-2xl h-48 max-h-68  flex items-center justify-between shadow-md border-2 border-slate-50 overflow-hidden ${pokemonTypes[0]}`}
+      className={` relative pokemon-list-container rounded-xl  max-h-48  flex items-center justify-between shadow-md border-2 border-slate-50 overflow-hidden ${pokemonTypes[0]}`}
       onClick={() => handlePokemonPreview(pokemonData, pokemonPrevId, pokemonNextId)}
     >
 
-    <div className="z-10 flex flex-col items-left justify-start mb-auto ">
-       <h3 className="text-3xl text-white font-semibold mb-4">{sliceName()}</h3>
-        <div className="">
+    <div className="z-10 flex flex-col items-left justify-start mb-auto">
+       <h3 className="pokemon-card-name text-white mb-4 font-extrabold ">{sliceName()}</h3>
+        <div className="mb-auto">
           {pokemonTypes.map((b, index) => {
             return (
               <div
                 key={index}
-                className={` max-w-24 font-semibold text-sm text-center mt-2 px-2 py-1 border border-white rounded-2xl ${b}`}
+                className={`card-type font-semibold text-center  mt-2 px-2 py-1 border border-white rounded-2xl ${b}`}
               >
                 {b}
               </div>
@@ -77,16 +77,16 @@ function PokemonList({
     </div>
 
     <div className="z-10 h-full flex flex-col justify-between">
-      <p className="text-xl font-semibold text-whiite-600 opacity-50 ml-auto mb-auto">#{String(pokemonId).padStart(4, "0")}</p>
+      <p className="card-id font-semibold text-white-600 opacity-50 ml-auto mb-auto">#{String(pokemonId).padStart(4, "0")}</p>
       <img
       src={pokemonSprite}
-      className={` z-10 pokemon-img h-full object-contain`}
+      className={`card-sprite z-10 pokemon-img h-full object-contain`}
       alt="img not found"
     />
 
     </div>
 
-  <img src={Pokeball} className="w-[13rem] absolute z-0 right-0 bottom-[-2.5rem] opacity-50"/>
+  <img src={Pokeball} className="pokeball-bg  absolute z-0  opacity-50"/>
 
     </section>
   );

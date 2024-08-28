@@ -40,7 +40,7 @@ function PokemonStats({statsName, statsNum, handleTotalStats, itemKey}) {
         </div>
 
         <div className='flex-1 px-2'>
-            <div className='bg-gray-100 w-full rounded-2xl h-6 mb-1'>
+            <div className='bg-gray-200 w-full rounded-2xl h-6 mb-1'>
               <div className={`bg-${statsName} h-full rounded-2xl`} style={statsBarStyles}>
               </div>
             </div>

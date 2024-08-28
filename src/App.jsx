@@ -9,7 +9,15 @@ import FilteringSection from "./components/Filter/FilteringSection.jsx"
 import Item from "./components/Items/Item.jsx"
 import MegaEvolution from "./components/MegaEvolution.jsx"
 import Home from "./Home.jsx"
+import About from "./About.jsx"
 import Pokeball from "./assets/Images/pokeball.png"
+import {Route, Routes, useLocation } from "react-router-dom"
+import { CgPokemon } from "react-icons/cg";
+import { IoHomeOutline } from "react-icons/io5";
+import { GiSquareBottle } from "react-icons/gi";
+import { FaRegCircleQuestion } from "react-icons/fa6";
+import { BiExit } from "react-icons/bi";
+import { Link } from 'react-router-dom';
 
 function App() {
   const [page, setPage] = useState(1);
@@ -29,8 +37,10 @@ function App() {
   const [prevPokemonPreview, setPrevPokemonPreview] = useState();
   const [prevEndPoint, setPrevEndPoint] = useState(false);
   const [filterIsActive, setFilterIsActive] = useState(false);
+  const [menuIsActive, setMenuIsActive] = useState(false);
 
   let pokemonName;
+  const location = useLocation();
 
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -483,11 +493,15 @@ function App() {
 
   const loadingPage = (
     <div className="z-10 loading-message-container flex flex-col items-center justify-center h-[90vh]">
-      <img src={LoadingImg} alt="" className="w-[20%] mb-4 z-10"/>
+      <img src={LoadingImg} alt="" className="h-[30vh] mb-4 z-10"/>
       <h5 className="text-xl font-bold loading-message">Loading <span>...</span></h5>
     </div>
   );
 
+  const handleMenuBar = () => {
+  setMenuIsActive(b => !b ? true : false )
+  console.log('he;;p')
+  }
 
   let content;
 
@@ -524,6 +538,7 @@ function App() {
           setLoading = {setLoading}
           setFilterPage = {setFilterPage}
           setActivePage = {setActivePage}
+          handleBar = {setMenuIsActive}
         />
       </div>
     );
@@ -543,19 +558,39 @@ function App() {
         switchNextPage={switchNextPage}
         prevEndPoint = {prevEndPoint}
         prevSetEndPoint = {setPrevEndPoint}
+        handleBar = {handleMenuBar}
       />
     );
   }
 
+
+
   return(
   <div className="relative">
-    {/*<Home />*/}
-    <Header />
-    {loading ? loadingPage :  <Item setLoading={setLoading} loading={loading}/>}
+    <Routes>
+      <Route path="/" element= {<Home />}/>
 
-    {/*{loading ? loadingPage : content}*/}
-  {/*  <img src={Pokeball} alt="" className="fixed top-[-4rem] z-0 left-[-8rem] opacity-50 w-[40rem]"/>
- */} </div>)
+      <Route path="/pagination" element={loading ? loadingPage : content}/>
+      <Route path="/items" element= {<Item />} />
+      <Route path="/about" element= {<About />} />
+    </Routes>
+
+    {location.pathname !== '/' && <Header handleMenuBar={handleMenuBar}/>}
+
+    <div className={`${!menuIsActive ? 'hidden' : 'block'} transition-all fixed top-20 right-[1rem] w-72 bg-white shadow-2xl z-20 p-4 rounded-md z-50`} >
+      <ul>
+       <Link to="/"> <li className="flex items-center gap-x-2 hover:bg-violet-50 hover:opacity-100  p-2 rounded-full" onClick={handleMenuBar}><span><IoHomeOutline /></span>Home</li></Link>
+       <Link to="/pagination"> <li className="flex items-center gap-x-2 hover:bg-violet-50 p-2 rounded-full" onClick={handleMenuBar}><span><CgPokemon /></span>Pagination</li></Link>
+        <Link to="/items"><li className="flex items-center gap-x-2 hover:bg-violet-50 p-2 rounded-full" onClick={handleMenuBar}><span><GiSquareBottle /></span>Items</li></Link>
+       <Link to="/about"> <li className="flex items-center gap-x-2 hover:bg-violet-50 p-2 rounded-full" onClick={handleMenuBar}><span><FaRegCircleQuestion /></span>About</li></Link>
+        <li className="flex items-center gap-x-2 hover:bg-violet-50 p-2 rounded-full" onClick={handleMenuBar}><span><BiExit /></span>Exit</li>
+      </ul>
+    </div>
+    {/*<img src={Pokeball} alt="" className="fixed top-[-4rem] z-0 left-[-8rem] opacity-50 w-[40rem]"/>*/}
+  </div>)
 }
 
 export default App;
+
+
+

@@ -3,6 +3,7 @@ import PokemonLogo from "./assets/Images/Pokemon_logo.png"
 import Sample1 from "./assets/Images/sample.jpg"
 import Sample2 from "./assets/Images/sample2.png"
 import Hero from "./assets/Images/loading-images.gif"
+import { Link } from 'react-router-dom';
 
 function Home(){
 
@@ -18,7 +19,7 @@ function Home(){
  				<div className = "">
  					<h3 className = "text-4xl font-extrabold mb-4">Discover Every Pokémon!</h3>
 	 				<p className = "mb-4">Explore our interactive Pokedex to find detailed stats, abilities, and evolution paths for all Pokémon. Perfect for trainers of all levels!</p>
-	 				<button className = "bg-black text-white text-sm px-4 py-2 rounded-full">Explore the Pokedex</button>
+	 				<button className = "bg-black text-white text-sm px-4 py-2 rounded-full"><Link to="/pagination">Explore the Pokedex</Link></button>
  				</div>
  			</div>
 
