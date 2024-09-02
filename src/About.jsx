@@ -3,10 +3,11 @@ import { AiFillInstagram } from "react-icons/ai";
 import { IoLogoGithub } from "react-icons/io";
 import { FaFacebook } from "react-icons/fa";
 import { FaLinkedin } from "react-icons/fa";
+import { CgMail } from "react-icons/cg";
 
 function About() {
 	return (
-		<div className="relative mt-20 mb-10 text-left bg-slate-50 z-40 h-full rounded-lg p-4 shadow-xl">
+		<div className="relative mt-20 mb-16 text-left bg-slate-50 z-40 h-full rounded-lg p-4 shadow-xl z-10">
 			<h1 className="z-10 text-center text-3xl font-extrabold mb-8">About This Pokédex</h1>
 
 
@@ -33,14 +34,14 @@ function About() {
   		 </p>
 	</div>
 
-	<div className="mt-8 mb-20">
+	<div className="mt-8 mb-8 ">
 		<h2 className="text-2xl font-bold mb-2">Technologies Used:</h2>
 
 		<p className="text-slate-800">
 		<p className="mb-2">To develop the Pokedex project, we utilized a variety of advanced tools and technologies. Each component played a crucial role in creating a seamless and interactive experience. Here’s an overview of the primary technologies that made this project possible:
 		</p>
 
-		<ul className="ml-4">
+		<ul className="ml-4 text-slate-800">
 			<li>• <span className="text-blue-600 "> ReactJS</span> (A JavaScript library for creating dynamic user interfaces)</li>
 			<li>• <span className="text-blue-600 "> Tailwind CSS</span> (A utility-first framework for rapid, customizable styling)</li>
 			<li>• <span className="text-blue-600 "> Git </span>(Manages source code changes and collaboration through version tracking)</li>
@@ -50,33 +51,49 @@ function About() {
 		</ul>
 
   		 </p>
-
-
-  <div className="mt-20 text-sm text-center bg-gray-200 absolute bottom-0 left-0 w-full p-4">
-    <p>
-        © 2024 Pokédex Central. Catch 'Em All with Us! 🌟 Explore the world of Pokémon and stay updated with the latest Pokédex entries. Questions or feedback? Contact me at <strong>jeavenanda07@gmail.com</strong>. Follow me on
-        <span className="cursor-pointer  flex justify-center gap-x-1 items-center inline-flex ml-2">
-           <a href="https://www.instagram.com/kafka_beta/" target="_blank">
-           	 <AiFillInstagram className="cursor-pointer text-xl translate-y-1"/>
-           </a>
-           <a href="" target="_blank">
-            <IoLogoGithub className="text-xl translate-y-1"/>
-           </a>
-           <a href="https://www.facebook.com/jeaven.anda.9/" target="_blank">
-           	 <FaFacebook className="cursor-pointer text-xl translate-y-1"/>
-           </a>
-           <a href="https://www.linkedin.com/in/jeaven-anda-426b6b312/?originalSubdomain=ph" target="_blank">
-           	<FaLinkedin className="cursor-pointer text-xl translate-y-1"/>
-           </a>
-        </span>
-    </p>
-</div>
-
 	</div>
 
+	<div className="mb-8">
+		<h2 className="text-2xl font-bold mb-2">Challenges and Learnings</h2>
 
+		<p className="text-slate-800 mb-4">This project wasn't without its challenges, but each obstacle was an opportunity to learn and grow:</p>
 
-		</div>
+		<ul className="ml-4 text-slate-800">
+			<li>• <span className="text-blue-600 "> API Integration:</span> Understanding how to efficiently fetch and manage large amounts of data from the PokéAPI was a significant learning curve. I learned a lot about asynchronous programming and API error handling.</li>
+			<li>• <span className="text-blue-600 "> Responsive Design:</span> Ensuring the Pokedex looks good on all devices required a deep dive into responsive design principles and CSS frameworks like Tailwind.</li>
+			<li>• <span className="text-blue-600 "> State Management:</span> Managing the state of the application, especially when dealing with dynamic data like Pokémon search results, taught me the importance of state management libraries in React, such as Redux or Context API.</li>
+		</ul>
+	</div>
+
+	<div className="mb-20">
+		<h2 className="text-2xl font-bold mb-2">Community and Feedback</h2>
+
+		<p className="text-slate-800 mb-4">I'm always looking to improve the Pokedex and make it more useful for the community. If you have any suggestions or ideas, please don't hesitate to reach out! Your feedback helps shape the future of this project and ensures it continues to be a valuable resource for Pokémon fans everywhere.</p>
+	</div>
+
+	  <footer className="mt-20 mb-4 text-xs text-center  bg-gray-200 absolute bottom-0 left-0 w-full p-4">
+		    <p>
+		     © 2024 Pokédex Central. Search 'Em All with us! 🌟 Dive into the Pokémon universe and stay updated with the newest entries in the Pokédex.Have questions or feedback? Reach out to us in our social media
+		        <span className="cursor-pointer  flex justify-center gap-x-1 items-center inline-flex ml-2">
+		           <a href="https://www.instagram.com/kafka_beta/" target="_blank">
+		           	 <CgMail className="cursor-pointer text-xl translate-y-1"/>
+		           </a>
+		           <a href="https://www.instagram.com/kafka_beta/" target="_blank">
+		           	 <AiFillInstagram className="cursor-pointer text-xl translate-y-1"/>
+		           </a>
+		           <a href="" target="_blank">
+		            <IoLogoGithub className="text-xl translate-y-1"/>
+		           </a>
+		           <a href="https://www.facebook.com/jeaven.anda.9/" target="_blank">
+		           	 <FaFacebook className="cursor-pointer text-xl translate-y-1"/>
+		           </a>
+		           <a href="https://www.linkedin.com/in/jeaven-anda-426b6b312/?originalSubdomain=ph" target="_blank">
+		           	<FaLinkedin className="cursor-pointer text-xl translate-y-1"/>
+		           </a>
+		        </span>
+		    </p>
+		</footer>
+</div>
 	)
 }
 

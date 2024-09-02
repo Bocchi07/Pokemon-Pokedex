@@ -18,8 +18,12 @@ import { GiSquareBottle } from "react-icons/gi";
 import { FaRegCircleQuestion } from "react-icons/fa6";
 import { BiExit } from "react-icons/bi";
 import { Link } from 'react-router-dom';
+import Navigation from "./components/Navigation.jsx"
 
 function App() {
+  const [nextPage, setNextPage] = useState();
+  const [prevPage, setPrevPage] = useState();
+  const [currentPage, setCurrentPage] = useState("https://pokeapi.co/api/v2/pokemon?limit=24&offset=0");
   const [page, setPage] = useState(1);
   const [filterPage, setFilterPage] = useState(1);
   const [activePage, setActivePage] = useState(true)
@@ -38,6 +42,7 @@ function App() {
   const [prevEndPoint, setPrevEndPoint] = useState(false);
   const [filterIsActive, setFilterIsActive] = useState(false);
   const [menuIsActive, setMenuIsActive] = useState(false);
+  const [backIsActive, setBackIsActive] = useState(false);
 
   let pokemonName;
   const location = useLocation();
@@ -58,27 +63,21 @@ function App() {
   };
 
   useEffect(() => {
-    setLoading(true);
     const pokemonList = async () => {
       setLoading(true);
       try {
-        const offset = (page - 1) * 20;
-        const response = await axios.get(
-          `https://pokeapi.co/api/v2/pokemon?limit=21&offset=${offset}`
-        );
+        const response = await axios.get(currentPage);
+
         const pokemonURL = response.data.results.map((pokemon) => pokemon.url);
 
         const pokemonDetailsPromises = pokemonURL.map((res) => axios.get(res));
-        const pokemonDetailsResponses = await Promise.all(
-          pokemonDetailsPromises
-        );
+        const pokemonDetailsResponses = await Promise.all(pokemonDetailsPromises);
 
         const detailedPokemon = pokemonDetailsResponses.map((res) => {
-          const { id, name, types, sprites, height, weight, stats, abilities } =
-            res.data;
+          const { id, name, types, sprites, height, weight, stats, abilities } = res.data;
           return {
             id,
-            name: name[0] + name.slice(1),
+            name: name[0].toUpperCase() + name.slice(1),
             types: types.map((info) => info.type.name),
             sprites: sprites.other["official-artwork"].front_default,
             height,
@@ -92,6 +91,8 @@ function App() {
         });
 
         setCurrentPokemon(detailedPokemon);
+        setNextPage(response.data.next);
+        setPrevPage(response.data.previous);
       } catch (error) {
         console.error(error);
       } finally {
@@ -100,37 +101,35 @@ function App() {
       }
     };
 
-    return () => {
-      pokemonList();
-      setLoading(false);
-      addFadeOut();
-    };
-  }, [ page]);
+    pokemonList();
+  }, [page, currentPage]);
 
-  const prevPokemon = () => {
-    if (activePage !== true){
-      setFilterPage((p) => (p > 1 ? p - 1 : 1))
+  const prevPokemon = async () => {
+    if (prevPage == null) {
+      return;
     } else {
-       setPage((p) => (p > 1 ? p - 1 : 1));
+      await setCurrentPage(prevPage);
     }
 
+    setPage((p) => (p === 1 ? 1 : p - 1));
     scrollToTop();
   };
 
-  const nextPokemon = () => {
-    if (activePage !== true){
-      setFilterPage((p) => p + 1)
-    } else{
-      setPage((p) => p + 1);
+  const nextPokemon = async () => {
+    setLoading(true);
+    if (nextPage == null) {
+      return;
+    } else {
+      await setCurrentPage(nextPage);
+      setPage((p) => (nextPage !== null ? p + 1 : p));
     }
 
+    setLoading(false);
     scrollToTop();
-    console.log(filterPage)
   };
 
   const handlePokemonInput = (e) => {
-    setSearchPokemon(e.target.value);
-   
+    setSearchPokemon(e.target.value.toLowerCase());
   };
 
   const [searchError, setSearchError] = useState("");
@@ -274,6 +273,7 @@ function App() {
   };
 
   const handlePokemonPreview = async (pokemonData, pokemonPrevId, pokemonNextId) => {
+    setBackIsActive(true)
     setLoading(true);
     setSwitchPage("PokemonPreview");
     scrollToTop();
@@ -482,6 +482,7 @@ function App() {
     setEvolutionStage(null)
     setNextPokemonPreview(null)
     setPrevPokemonPreview(null)
+    setBackIsActive(false)
   };
 
   const handleFilterIsActive = () => {
@@ -539,6 +540,7 @@ function App() {
           setFilterPage = {setFilterPage}
           setActivePage = {setActivePage}
           handleBar = {setMenuIsActive}
+          setCurrentPage = {setCurrentPage}
         />
       </div>
     );
@@ -575,17 +577,9 @@ function App() {
       <Route path="/about" element= {<About />} />
     </Routes>
 
-    {location.pathname !== '/' && <Header handleMenuBar={handleMenuBar}/>}
+    {location.pathname !== '/' && <Header handleMenuBar={handleMenuBar} backIsActive={backIsActive} setBackIsActive={setBackIsActive} closePage={backToPaginationPg}/>}
 
-    <div className={`${!menuIsActive ? 'hidden' : 'block'} transition-all fixed top-20 right-[1rem] w-72 bg-white shadow-2xl z-20 p-4 rounded-md z-50`} >
-      <ul>
-       <Link to="/"> <li className="flex items-center gap-x-2 hover:bg-violet-50 hover:opacity-100  p-2 rounded-full" onClick={handleMenuBar}><span><IoHomeOutline /></span>Home</li></Link>
-       <Link to="/pagination"> <li className="flex items-center gap-x-2 hover:bg-violet-50 p-2 rounded-full" onClick={handleMenuBar}><span><CgPokemon /></span>Pagination</li></Link>
-        <Link to="/items"><li className="flex items-center gap-x-2 hover:bg-violet-50 p-2 rounded-full" onClick={handleMenuBar}><span><GiSquareBottle /></span>Items</li></Link>
-       <Link to="/about"> <li className="flex items-center gap-x-2 hover:bg-violet-50 p-2 rounded-full" onClick={handleMenuBar}><span><FaRegCircleQuestion /></span>About</li></Link>
-        <li className="flex items-center gap-x-2 hover:bg-violet-50 p-2 rounded-full" onClick={handleMenuBar}><span><BiExit /></span>Exit</li>
-      </ul>
-    </div>
+    <Navigation menuIsActive={menuIsActive} handleMenuBar={handleMenuBar} closePage={backToPaginationPg}/>
     {/*<img src={Pokeball} alt="" className="fixed top-[-4rem] z-0 left-[-8rem] opacity-50 w-[40rem]"/>*/}
   </div>)
 }

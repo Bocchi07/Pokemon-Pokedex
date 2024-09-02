@@ -5,19 +5,17 @@
   max-width: 1280px;
   margin: 0 auto;
   text-align: center;
-  padding: 0 1.1rem;
 }
 
 body {
   font-family: "Raleway", sans-serif;
-  background-color: rgba(240, 240, 250, .9);
+/*  background-color: rgba(240, 240, 250, .9);*/
 }
 
 .header{
   transition: all 300ms ease-in-out;
-  background-color: rgba(240, 240, 250, 1);
-}
 
+}
 .hidden {
   top: -100px; /* Move the header out of view */
 }
@@ -86,6 +84,7 @@ summary{
     width: 20%;
     margin-top: 0;
     padding-inline: 1rem;
+    margin-left: -.5rem;
   }
 
   .filter-section .filter{
@@ -141,6 +140,14 @@ summary{
 
 
 @media (max-width: 720px){
+    #root {
+    padding: 0 .0rem;
+    }
+
+    .pagination-container{
+      padding: 0 .7rem;
+    }
+
     .pokemon-list-wrapper{
       display: grid;
       grid-template-columns: repeat(2, 1fr);
@@ -204,6 +211,21 @@ summary{
     .card-sprite{
       height: 20rem;
     }
+
+    .filter-msg,
+    .back-msg,
+    .id-table{
+      display: none;
+    }
+
+    .table-form{
+      flex-direction: column;
+    }
+
+    .name-table-section{
+      text-align: center;
+      justify-content: center;
+    }
 }
 
 .tr-content{
@@ -258,6 +280,7 @@ summary{
 
 .electric {
   background-color: #f8d030;
+  color: black;
 }
 
 .psychic {
@@ -282,10 +305,12 @@ summary{
 .ground {
   background: linear-gradient(180deg, #f7de3f 50%, #ab9842 50%);
   background-color: #f7de3f;
+  color: black;
 }
 
 .flying{
   background: linear-gradient(180deg, #3dc7ef 50%, #bdb9b8 50%);
+  color: white;
 }
 
 .bug{
@@ -295,6 +320,7 @@ summary{
 
 .rock {
   background-color: #b8a038;
+    color: white;
 }
 
 .ghost {
@@ -305,6 +331,7 @@ summary{
 .dragon {
   background: linear-gradient(180deg, #53a4cf 50%, #f16e57 50%);
   background-color: #53a4cf;
+  color: white;
 }
 
 .dark {
@@ -314,10 +341,12 @@ summary{
 
 .steel {
   background-color: #b8b8d0;
+  color: white;
 }
 
 .fairy {
   background-color: #fdb9e9;
+  color: white;
 }
 
 .normal {
@@ -373,15 +402,19 @@ summary{
 
 
 
-.evolution-connnection{
-  position: absolute;
-  width: 40rem;
-  height: 10px;
-  right: 0;
-  top: -8rem;
-  z-index: -1;
-  background-color: red;
+@media (min-width: 800px){
+  .evolution-connnection{
+    position: absolute;
+    width: 39rem;
+    height: 10px;
+    right: 0;
+    top: -8rem;
+    z-index: -1;
+    background-color: red;
+  }
 }
+
+
 
 .prev-container img,
 .next-container img{
@@ -398,7 +431,6 @@ summary{
 .loading-message {
   font-size: 24px; /* Adjust as needed */
   font-weight: bold; /* Optional, for emphasis */
-  color: #333; /* Adjust color as needed */
   animation: fade 2s infinite ease-in-out;
 }
 
@@ -476,4 +508,155 @@ li{
 
 .load-more-items:hover{
   background-color: rgba(20, 100, 255, 1);
+}
+
+
+
+
+@media (min-width: 570px){
+  .home-container{
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .home-container div:first-child{
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    justify-content: space-evenly;
+  }
+
+  .slider-container{
+    display: flex;
+    width: 90%;
+    margin-bottom: auto;
+    margin-right: auto;
+  }
+
+  .second-hero{
+    display: none;
+  }
+
+  .home-first-container div:nth-child(2) h3{
+    font-size: 2.3rem;
+  }
+
+  .home-mobile-view{
+    display: none;
+  }
+}
+
+@media (max-width: 570px){
+   .home-container{
+      display: none;
+  }
+
+  .home-mobile-view{
+    background-image: url("https://assets.pokemon.com//assets/cms2/img/misc/virtual-backgrounds/sword-shield/pokemon-in-the-wild.png");
+    background-repeat: no-repeat;
+    background-position: left;
+    background-size: cover;
+  }
+
+  .home-glass {
+    background: rgba( 64, 64, 64, 0.35 );
+    box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37 );
+    backdrop-filter: blur( 6px );
+    -webkit-backdrop-filter: blur( 6px );
+    border-radius: 10px;
+    border: 1px solid rgba( 255, 255, 255, 0.18 );
+    height: 100dvh;
+  }
+
+  .home-first-container div:first-child{
+    margin-top: auto;
+    z-index: 20;
+  }
+
+  .home-first-container div:nth-child(2){
+    margin-top: 20rem;
+    width: 100%;
+    z-index: 20;
+  }
+
+  .home-first-container div:nth-child(2) h3{
+    font-size: 1.8rem;
+  }
+
+  .home-first-container div:nth-child(2) button{
+    width: 100%;
+  }
+
+  .hero{
+    display: none;
+  }
+
+  .second-hero{
+    display: block;
+    z-index: 0;
+  }
+
+  .slider-container {
+    display: none;
+  }
+
+  .slider-container div img:first-child{
+    width: 100%;
+
+  }
+
+  .first-img{
+    max-width: 17rem;
+
+  }
+
+  .sec-img{
+    min-width: 8rem;
+    transform: translateY(-40px);
+  }
+
+
+  .home-description{
+    font-size: .8rem;
+    width: 90%;
+  }
+}
+
+.menu-bar.active{
+  background: rgba( 30, 26, 26, 0.65 );
+  box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37 );
+  backdrop-filter: blur( 12px );
+  -webkit-backdrop-filter: blur( 12px );
+  border-radius: 10px;
+  border: 1px solid rgba( 255, 255, 255, 0.18 );
+}
+
+.custom-scroll::-webkit-scrollbar {
+  width: 0; /* Remove scrollbar space */
+  height: 0; /* Remove scrollbar space */
+}
+
+.custom-scroll {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+.theme-container{
+background: rgba( 48, 48, 48, 0.45 );
+box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37 );
+backdrop-filter: blur( 13.5px );
+-webkit-backdrop-filter: blur( 13.5px );
+border-radius: 10px;
+border: 1px solid rgba( 255, 255, 255, 0.18 );
+}
+
+input::-webkit-calendar-picker-indicator {
+  display: none;
+  -webkit-appearance: none;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  display: none;
+  -webkit-appearance: none;
 }

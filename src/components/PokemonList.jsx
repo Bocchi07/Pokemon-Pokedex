@@ -56,7 +56,7 @@ function PokemonList({
 
   return (
     <section
-      className={` relative pokemon-list-container rounded-xl  max-h-48  flex items-center justify-between shadow-md border-2 border-slate-50 overflow-hidden ${pokemonTypes[0]}`}
+      className={` relative pokemon-list-container rounded-xl  max-h-48  flex items-center justify-between shadow-md  overflow-hidden ${pokemonTypes[0]}`}
       onClick={() => handlePokemonPreview(pokemonData, pokemonPrevId, pokemonNextId)}
     >
 

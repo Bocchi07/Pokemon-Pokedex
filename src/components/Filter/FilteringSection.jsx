@@ -13,7 +13,7 @@ import filterIcon from "../../assets/Icons/filterIcon.png"
 import { LuArrowLeftToLine } from "react-icons/lu";
 import FilterItem from "./FilterItem.jsx";
 
-function FilteringSection({setLoading, searchPokemon, handleSearch, searchedPokemon, setFilterIsActive, filterIsActive, handleFilterIsActive, setCurrentPokemon, handleEvolutionStagesPreview, setPage, setFilterPage, filterPage, setActivePage}) {
+function FilteringSection({setLoading, searchPokemon, setCurrentPage, handleSearch, searchedPokemon, setFilterIsActive, filterIsActive, handleFilterIsActive, setCurrentPokemon, handleEvolutionStagesPreview, setPage, setFilterPage, filterPage, setActivePage}) {
   const [page, setPages] = useState(1);
   // const [loading, setLoading] = useState(false);
   const [activeIndex, setActiveIndex] = useState();
@@ -158,6 +158,13 @@ function FilteringSection({setLoading, searchPokemon, handleSearch, searchedPoke
       }
 
   const handleAllFormsPokemon = async (forms) => {
+    if (forms === "standard"){
+      await setCurrentPage("https://pokeapi.co/api/v2/pokemon?limit=30&offset=0")
+      setPage(1)
+      setActivePage(true);
+      return
+    }
+
     setLoading(true)
       try{
          const response = await axios.get("https://pokeapi.co/api/v2/pokemon-species?limit=100000&offset=0")
@@ -320,13 +327,16 @@ function FilteringSection({setLoading, searchPokemon, handleSearch, searchedPoke
  // console.log(pokemonTypesArr);
 
   return (
-    <div className="filter-section">
+    <div className="filter-section ">
       <div>
-        {/*<h3 className="text-left font-semibold mb-2">Filter by:</h3>*/}
+        {/*<h3 className="text-left font-semibold mb-3 flex gap-x-2 text-lg"><img src={filterIcon} alt="" className="w-5"/> Filters</h3>*/}
         <div className="filter flex gap-y-1 gap-x-1 mb-8">
+          {/*<div className="w-full bg-white py-1 px-2 rounded-full shadow-sm">Moves</div>*/}
+
+         <h4 className="text-base font-semibold text-left mb-2 filter-msg">Filter By:</h4>
           <select id="forms" className="filter-list form-select  h-10 px-3 text-sm rounded-md bg-white border-0 border-slate-100 shadow-md cursor-pointer" onChange={handleFormChange}>
               <option value="" className="text-xs">All Forms</option>
-              <option value="standard" className="text-xs">Standard</option>
+              <option value="standard" className="text-xs">Standard Form</option>
               <option value="mega" className="text-xs">Mega Evolution</option>
               <option value="gmax" className="text-xs">Gigantamax</option>
               <option value="alola" className="text-xs">Alolan Form</option>
@@ -348,12 +358,45 @@ function FilteringSection({setLoading, searchPokemon, handleSearch, searchedPoke
             })}
           </select>
 
-          <select onChange={handleMoveChange} className="move-filter filter-list h-10 px-3 text-sm rounded-md bg-white border-0 border-slate-100 shadow-md cursor-pointer mb-8">
+
+   {/*      <div className="text-left flex flex-col mt-4 text-sm gap-y-2 pb-4 border-slate-400">
+              <h4 className="text-base font-semibold">Sort by:</h4>
+
+              <div className="ml-4">
+                 <input type="radio" name="moves-option" id="all-moves" className="mr-2 border-black"/>
+                 <label htmlFor="all-moves">Lowest Number (First)</label>
+              </div>
+
+             <div className="ml-4">
+                 <input type="radio" name="moves-option" id="all-moves" className="mr-2"/>
+                 <label htmlFor="all-moves">Highest Number (First)</label>
+              </div>
+
+              <div className="ml-4">
+                 <input type="radio" name="moves-option" id="all-moves" className="mr-2"/>
+                 <label htmlFor="all-moves">A-Z</label>
+              </div>
+
+              <div className="ml-4">
+                 <input type="radio" name="moves-option" id="all-moves" className="mr-2"/>
+                 <label htmlFor="all-moves">Z-A</label>
+              </div>
+          </div>*/}
+
+
+
+
+
+
+
+
+
+{/*          <select onChange={handleMoveChange} className="move-filter filter-list h-10 px-3 text-sm rounded-md bg-white border-0 border-slate-100 shadow-md cursor-pointer mb-8">
             <option value="" className="text-xs">Moves</option>
             {pokemonGenerations && pokemonGenerations.map((t, i) => {
                 return <option key={i} value={t} className="text-xs">{t[0].toUpperCase() + t.slice(1)}</option>
             })}
-          </select>
+          </select>*/}
 
       </div>
 

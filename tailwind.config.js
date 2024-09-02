@@ -4,4 +4,16 @@ export default {
   theme: {
     extend: {},
   },
+  plugins: [require("daisyui")],
+  daisyui: {
+    themes: [
+      'nord', //slate
+      "dim", //dark
+      "retro", //yellow
+      "cupcake", // white
+      "luxury",
+      "lemonade"
+    ]
+  },
 };
+

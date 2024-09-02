@@ -80,93 +80,93 @@ function PokemonEvolutionStages({handleEvolutionStagesPreview, evolutionStage, f
     const secondPokemon = handlePokemonName() ? handlePokemonName().second.toLowerCase() : " hello";
     const thirdPokemon = handlePokemonName() ? handlePokemonName().third.toLowerCase() : " hello";
    
-    // console.log(firstPokemon, secondPokemon, thirdPokemon)
+    // console.log(evolutionStage.types.firstForm[0].type.name)
 
     return (
-    <div className="w-full h-80 mt-20">
-        <h4 className="text-2xl font-semibold text-center  ">Evolution Stages</h4>
+    <div className="evolution-tree-container w-full ">
+        <h4 className="text-2xl font-bold text-center mb-8">Evolution Tree</h4>
 
-        <div className='flex justify-around items-center gap-x-8 pr-4 p-8'>
-            <div className='w-[25%]'>
+        <div className='flex justify-around items-center gap-x-8 mb-5'>
+            <div className=' evolutionStage-wrapper'>
                     { firstForm && 
-                        <div onClick={() => handleEvolutionStagesPreview(firstPokemon)} className="evolution-stages relative flex justify-center items-center bg-gray-200 p-8 rounded-full my-auto hover-bg-gray-300">
+                        <div onClick={() => handleEvolutionStagesPreview(firstPokemon)} className={`evol-sprite-wrapper evolution-stages bg-gray-200 relative flex justify-center items-center rounded-full my-auto hover:bg-green-300`}>
                             <img src={firstForm}/>
                         </div>
                     }
             
                     {evolutionStage && 
                         <div className="relative">
-                            <h3 className='text-lg font-semibold'> {handlePokemonName() && handlePokemonName().first} </h3>
-                            <p>{firstFormId}</p>
-                            <div className='flex gap-x-2 justify-center'>
+                            <h3 className='evol-poke-name font-bold'> {handlePokemonName() && handlePokemonName().first} </h3>
+                            <p className="evol-poke-id">{firstFormId}</p>
+                            <div className='flex justify-center evol-type-container'>
                                 {
                                     evolutionStage.types.firstForm.map((t, i) => {
-                                        return <div key={i} className={`${t.type.name} bg-grass rounded-full  mt-2 text-sm py-1 px-4`}> {t.type.name}</div>
+                                        return <div key={i} className={`${t.type.name} bg-grass rounded-full  mt-2 py-1 px-4`}> {t.type.name}</div>
                                     })
                                 }
                             </div>
 
 
-
-                                {/*<MdKeyboardArrowLeft className="absolute top-[-4rem] right-[-2.5rem] text-3xl opacity-80 rotate-180 " />*/}
                         </div>
-
                        }
 
                 </div> 
             
                     {
                         secondForm && 
-                        <div  className='w-[25%]'>   
+                        <div  className='evolutionStage-wrapper relative'>
                             {secondForm && 
-                                <div onClick={() => handleEvolutionStagesPreview(secondPokemon)} className="evolution-stages flex justify-center items-center bg-gray-100 p-8 rounded-full my-auto">
+                                <div onClick={() => handleEvolutionStagesPreview(secondPokemon)} className="evol-sprite-wrapper evolution-stages flex justify-center items-center bg-gray-200 rounded-full my-auto hover:bg-gray-300">
                                     <img src={secondForm}/>
                                 </div>
                                 }
 
                             {evolutionStage && 
                             <div className='relative'>
-                                <div className='evolution-connnection bg-gray-100'></div>
-                                <h3 className='text-lg font-semibold'> {handlePokemonName() && handlePokemonName().second} </h3>
-                                <p>{secondFormId}</p>
+                                <div className='evolution-connnection bg-gray-200'></div>
+                                <h3 className='evol-poke-name font-bold'> {handlePokemonName() && handlePokemonName().second} </h3>
+                                <p className="evol-poke-id">{secondFormId}</p>
 
-                                    <div className='flex justify-center gap-x-2'>
+                                    <div className='flex justify-center evol-type-container'>
                                     {
                                         evolutionStage.types.firstForm.map((t, i) => {
-                                            return <div key={i} className={`${t.type.name} bg-grass rounded-full  mt-2 text-sm py-1 px-4`}> {t.type.name}</div>
+                                            return <div key={i} className={`${t.type.name} bg-grass rounded-full  mt-2 py-1 `}> {t.type.name}</div>
                                         })
                                     }
                                     </div>
                                 </div>
-                                
+
                                 }
+                                 <MdKeyboardArrowLeft className="evol-tree-arrow absolute  text-2xl opacity-50 rotate-180 " />
                          </div>
                     }
                
                     {lastForm && 
-                        <div  className='w-[25%]'>
+                    <div  className='evolutionStage-wrapper relative'>
                         {lastForm && 
-                            <div onClick={() => handleEvolutionStagesPreview(thirdPokemon)} className="evolution-stages  flex justify-center items-center bg-gray-100 p-8 rounded-full my-auto ">
+                            <div onClick={() => handleEvolutionStagesPreview(thirdPokemon)} className="evol-sprite-wrapper evolution-stages  flex justify-center items-center bg-gray-200 rounded-full my-auto hover:bg-gray-300">
                               <img src={lastForm}/>
                             </div>
                             }
 
                         {evolutionStage && 
                         <div className='relative'>
-                            <div className='evolution-connnection bg-gray-100'></div>
-                            <h3 className='text-lg font-semibold'> {handlePokemonName() && handlePokemonName().third} </h3>
-                            <p>{thirdFormId}</p>
+                            <div className='evolution-connnection bg-gray-200'></div>
+                            <h3 className='evol-poke-name font-bold'> {handlePokemonName() && handlePokemonName().third} </h3>
+                            <p className="evol-poke-id">{thirdFormId}</p>
                           
-                            <div className='flex gap-x-2 justify-center'>
+                            <div className='flex justify-center evol-type-container'>
                                 {
                                     evolutionStage.types.thirdForm.map((t, i) => {
-                                        return <div key={i} className={`${t.type.name} bg-grass rounded-full  mt-2 text-sm py-1 px-6`}> {t.type.name}</div>
+                                        return <div key={i} className={`${t.type.name} bg-grass rounded-full mt-2 py-1 px-3`}> {t.type.name}</div>
                                     })
                                 }
                             </div>
                         
                             </div>
                             }
+
+                             <MdKeyboardArrowLeft className="evol-tree-arrow absolute text-2xl opacity-50 rotate-180 " />
                     </div>
                     }
         </div>
